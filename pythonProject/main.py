@@ -51,7 +51,7 @@ while opcion != 0:
                                  "\n1. Ver estado del parking"
                                  "\n2. Facturación"
                                  "\n3. Consulta de abonados"
-                                 "\n4. Comprar abono"
+                                 "\n4. Gestión abonos"
                                  "\n5. Caducidad abonos"
                                  "\nOpcion: "))
 
@@ -78,15 +78,16 @@ while opcion != 0:
             elif opcion_abono == 1:
                 abonados_service.crear_abonado(parking)
             elif opcion_abono == 2:
-                pass
+                abonados_service.modificar_informacion_personal_abonado(parking)
             elif opcion_abono == 3:
-                pass
+                abonados_service.modificar_abono(parking)
             elif opcion_abono == 4:
-                pass
+                abonados_service.baja_abonado(parking)
             else:
                 print("Opción incorrecta")
                 pass
 
         elif opcion_admin == 5:
+            abonados_service.caducidad_abonos(parking)
+        else:
             print("Opción incorrecta")
-            pass

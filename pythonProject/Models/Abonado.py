@@ -17,7 +17,7 @@ class Abonado(Cliente):
 
     def __str__(self):
         print("Nombre: "+self.__nombre+"; Apellidos: "+self.__apellidos+"; Gmail: "+self.__gmail+";\n"
-            "Tipo de abono: "+self.__tipo_abono+"; Matricula vehículo: "+self.vehiculo.matricula+"; Plaza parking: "+str(self.plaza_parking+";\n"))
+            "Tipo de abono: "+self.__tipo_abono+"; Matricula vehículo: "+self.vehiculo.matricula+"; Plaza parking: "+str(self.plaza_parking)+";\n")
 
 
     @property

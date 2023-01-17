@@ -1,7 +1,7 @@
 class Parking:
 
     def __init__(self, plazas_totales, plazas_turismo, plazas_motos, plazas_minusvalidos, recaudacion={},
-                 lista_vehiculos=[], lista_clientes=[], estado_plazas={}, lista_abonados=[]):
+                 lista_vehiculos=[], lista_clientes=[], estado_plazas={}, lista_abonados=[], recaudacion_abonos = {}):
         self.__plazas_turismo = plazas_turismo
         self.__plazas_motos = plazas_motos
         self.__plazas_minusvalidos = plazas_minusvalidos
@@ -11,6 +11,7 @@ class Parking:
         self.__estado_plazas = estado_plazas
         self.__lista_abonados = lista_abonados
         self.__recaudacion = recaudacion
+        self.__recaudacion_abonos = recaudacion_abonos
 
     @property
     def plazas_totales(self):
@@ -82,4 +83,12 @@ class Parking:
 
     @recaudacion.setter
     def recaudacion(self, p):
-        self.__recaudacion
+        self.__recaudacion = p
+
+    @property
+    def recaudacion_abonos(self):
+        return self.__recaudacion_abonos
+
+    @recaudacion_abonos.setter
+    def recaudacion_abonos(self, r):
+        self.__recaudacion_abonos = r

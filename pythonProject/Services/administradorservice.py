@@ -43,27 +43,24 @@ class AdministradorService:
             if fecha_inicio < fecha < fecha_fin:
                 sum += cobro
                 cant += 1
-                print("Fecha: {}/{}/{}".format(fecha.day, fecha.month, fecha.year), "- {}:{}:{}".format(fecha.hour, fecha.minute, fecha.second))
-                print("Recaudacion: ",str(cobro))
+                print("Fecha: {}/{}/{}".format(fecha.day, fecha.month, fecha.year),
+                      "- {}:{}:{}".format(fecha.hour, fecha.minute, fecha.second))
+                print("Recaudacion: ", str(cobro))
                 print("========================")
-        print("La recaudación total entre "+str(fecha_inicio)+" y "+str(fecha_fin)+" ha sido de "+str(sum)+" € con un total de "+str(cant)+" cobro/s")
+        print("La recaudación total entre " + str(fecha_inicio) + " y " + str(fecha_fin) + " ha sido de " + str(
+            sum) + " € con un total de " + str(cant) + " cobro/s")
 
     def consultar_abonados(self, parking):
 
-        sum=0.0
+        sum = 0.0
+
+        for k, v in parking.recaudacion_abonos.items():
+            sum += v
+
         abonados = parking.lista_abonados
 
         for abonado in abonados:
             abonado.__str__()
             print("=====================================================")
 
-            if abonado.tipo_abono == "mensual":
-                sum += 25
-            elif abonado.tipo_abono == "trimestral":
-                sum += 70
-            elif abonado.tipo_abono == "semestral":
-                sum += 130
-            else:
-                sum += 200
-
-        print("\n Se han recaudado un total de "+str(sum)+"€")
+        print("\n Se han recaudado un total de " + str(sum) + "€")
