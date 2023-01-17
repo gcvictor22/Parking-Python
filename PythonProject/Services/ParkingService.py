@@ -13,7 +13,7 @@ class ParkingService:
         print('El total del plazas disponibles es: ', parking.plazas_totales)
         print('Plazas turismos -> ', parking.plazas_turismo)
         print('Plazas motos -> ', parking.plazas_motos)
-        print('Plazas minusvalidos -> ', parking.plazas_minusvalidos)
+        print('Plazas movilidad reducida -> ', parking.plazas_minusvalidos)
 
     def depositar_vehiculo(self, parking):
 
@@ -23,7 +23,7 @@ class ParkingService:
         print('¿Qué tipo de vehiculo es?'
               '\n1. Turismo'
               '\n2. Moto'
-              '\n3. Minusvalido')
+              '\n3. Movilidad reducidad')
 
         tipo = int(input('Opcion: '))
         if tipo == 1 and parking.plazas_turismo > 0:

@@ -46,7 +46,7 @@ class AbonadosService:
         print('¿Qué tipo de vehiculo es?'
               '\n1. Turismo'
               '\n2. Moto'
-              '\n3. Minusvalido')
+              '\n3. Movilidad reducida')
 
         tipo_v = int(input('\nOpcion: '))
         if tipo_v == 1 and parking.plazas_turismo > 0:
@@ -56,7 +56,7 @@ class AbonadosService:
             nuevo_vehiculo = Vehiculo(matricula, 'Moto')
             parking.plazas_motos -= 1
         elif tipo_v == 3 and parking.plazas_minusvalidos > 0:
-            nuevo_vehiculo = Vehiculo(matricula, 'Minusvalido')
+            nuevo_vehiculo = Vehiculo(matricula, 'Movilidad reducida')
             parking.plazas_minusvalidos -= 1
 
         parking.plazas_totales -= 1
@@ -175,14 +175,32 @@ class AbonadosService:
 
     def caducidad_abonos(self, parking):
 
-        anho = int(input("Introduce un año: "))
-        mes = int(input("Introduce un mes: "))
+        opcion = int(input("¿Qué deseas comprobar: "
+                                 "\n1. Comprobar abonos que caducan un mes"
+                                 "\n2. Comprobar abonos que caducan dentro de 10 días"
+                                 "\nOpcion: "))
 
-        mes_comprobar = datetime(year=anho, month=mes, day=1)
-        mes_fin = mes_comprobar + timedelta(days=30)
+        if opcion == 1:
+            anho = int(input("Introduce un año: "))
+            mes = int(input("Introduce un mes: "))
 
-        for abonado in parking.lista_abonados:
-            if mes_comprobar < abonado.fecha_caducidad_abono < mes_fin:
-                resto = abonado.fecha_caducidad_abono - datetime.now()
-                print("El abono del usuario con Gmail: "+abonado.gmail+" caduca este mes.")
-                print("El abono caduca dentro de: "+str(resto[0]))
+            mes_comprobar = datetime(year=anho, month=mes, day=1)
+            mes_fin = mes_comprobar + timedelta(days=30)
+
+            for abonado in parking.lista_abonados:
+                if mes_comprobar < abonado.fecha_caducidad_abono < mes_fin:
+                    resto = abonado.fecha_caducidad_abono - datetime.now()
+                    print("El abono del usuario con Gmail: "+abonado.gmail+" caduca este mes.")
+                    print("El abono caduca dentro de: "+str(resto[0]))
+
+        elif opcion == 2:
+
+            fecha_final = datetime.now() + timedelta(days=30)
+            for abonado in parking.lista_abonados:
+                if datetime.now() < abonado.fecha_caducidad_abono < fecha_final:
+                    resto = abonado.fecha_caducidad_abono - datetime.now()
+                    print("El abono del usuario con Gmail: "+abonado.gmail+" caduca este en menos de 10 días.")
+                    print("El abono caduca dentro de: "+str(resto[0]))
+
+        else:
+            print("Opcion incorrecta")
