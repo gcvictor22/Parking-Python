@@ -1,3 +1,5 @@
+import random
+
 from Models.Abonado import Abonado
 from Models.Vehiculo import Vehiculo
 from datetime import datetime
@@ -71,12 +73,13 @@ class AbonadosService:
         plaza_parking = int(input("\n\nPara terminar, elije una de las siguientes plazas: "))
 
         parking.estado_plazas[plaza_parking] = "Reservada libre"
+        pin = random.randint(100000, 999999)
 
         fecha_activacion_abono = datetime.now()
         nuevo_abonado = Abonado(nombre=nombre, apellidos=apellidos, gmail=gmail, dni=dni, tarjeta=tajeta,
                                 tipo_abono=tipo_abono, vehiculo=nuevo_vehiculo, plaza_parking=plaza_parking,
                                 fecha_activacion_abono=fecha_activacion_abono,
-                                fecha_caducidad_abono=fecha_caducidad_abono, fecha_deposito='', pin=0)
+                                fecha_caducidad_abono=fecha_caducidad_abono, fecha_deposito='', pin=pin)
 
         parking.lista_abonados.append(nuevo_abonado)
 

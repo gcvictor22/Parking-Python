@@ -62,9 +62,8 @@ class ParkingService:
             if abonado.vehiculo.matricula.upper() == matricula.upper() and abonado.dni == dni:
                 if abonado.fecha_caducidad_abono > datetime.datetime.now():
                     parking.estado_plazas[abonado.plaza_parking] = "Reservada Ocupada"
-                    pin = random.randint(100000, 999999)
                     parking.lista_clientes.append(abonado)
-                    ticket = Ticket(abonado.vehiculo.matricula, datetime.datetime.now(), abonado.plaza_parking, pin)
+                    ticket = Ticket(abonado.vehiculo.matricula, datetime.datetime.now(), abonado.plaza_parking, abonado.pin)
                     ticket.__str__()
                 else:
                     print("Tu abono ha caducado")
