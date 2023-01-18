@@ -1,4 +1,5 @@
 import datetime
+import pickle
 
 
 class AdministradorService:
@@ -50,17 +51,23 @@ class AdministradorService:
         print("La recaudación total entre " + str(fecha_inicio) + " y " + str(fecha_fin) + " ha sido de " + str(
             sum) + " € con un total de " + str(cant) + " cobro/s")
 
-    def consultar_abonados(self, parking):
+    def consultar_abonados(self):
+
+        f_recaudacion_abonados = open('Ficheros/recaudacion_abonados', 'rb')
+        recaudacion_abonados = pickle.load(f_recaudacion_abonados)
+        f_recaudacion_abonados.close()
 
         sum = 0.0
 
-        for k, v in parking.recaudacion_abonos.items():
+        for k, v in recaudacion_abonados.items():
             sum += v
 
-        abonados = parking.lista_abonados
+        f_listado_abonados = open('./Ficheros/listado_abonados', 'rb')
+        listado_abonados = pickle.load(f_listado_abonados)
+        f_listado_abonados.close()
 
-        for abonado in abonados:
-            abonado.__str__()
-            print("=====================================================")
+        for a in listado_abonados:
+            print(a)
+            print("==========================================================================")
 
         print("\n Se han recaudado un total de " + str(sum) + "€")

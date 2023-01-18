@@ -10,13 +10,26 @@ from datetime import timedelta
 class AbonadosService:
 
     def crear_abonado(self, parking):
+
+        f_abonados = open('Ficheros/listado_abonados', 'rb')
+        lista_fichero_abonados = pickle.load(f_abonados)
+        f_abonados.close()
+
+        f_recaudacion_abonados = open('Ficheros/recaudacion_abonados', 'rb')
+        fichero_recaudacion_abonados = pickle.load(f_recaudacion_abonados)
+        f_recaudacion_abonados.close()
+
+        f_estado_plazas = open('Ficheros/estado_plazas', 'rb')
+        estado_plazas = pickle.load(f_estado_plazas)
+        f_estado_plazas.close()
+
         print("Datos personales\n"
               "----------------")
         nombre = input("Nombre: ")
         apellidos = input("Apellidos: ")
         gmail = input("Gmail: ")
         dni = input("DNI: ")
-        tajeta = input("Tarjeta de pago: ")
+        tarjeta = int(input("Tarjeta de pago: "))
 
         print("Abono\n"
               "-----")
@@ -29,19 +42,19 @@ class AbonadosService:
         if tipo_a == 1:
             tipo_abono = "mensual"
             fecha_caducidad_abono = datetime.now() + timedelta(days=30)
-            parking.recaudacion_abonos[tajeta] = 25
+            fichero_recaudacion_abonados[tarjeta] = 25
         elif tipo_a == 2:
             tipo_abono = "trimestral"
             fecha_caducidad_abono = datetime.now() + timedelta(days=90)
-            parking.recaudacion_abonos[tajeta] = 70
+            fichero_recaudacion_abonados[tarjeta] = 70
         elif tipo_a == 3:
             tipo_abono = "semestral"
             fecha_caducidad_abono = datetime.now() + timedelta(days=183)
-            parking.recaudacion_abonos[tajeta] = 130
+            fichero_recaudacion_abonados[tarjeta] = 130
         else:
             tipo_abono = "anual"
             fecha_caducidad_abono = datetime.now() + timedelta(days=365)
-            parking.recaudacion_abonos[tajeta] = 200
+            fichero_recaudacion_abonados[tarjeta] = 200
 
         print("Vehiculo\n"
               "--------")
@@ -65,7 +78,7 @@ class AbonadosService:
         parking.plazas_totales -= 1
 
         for i in range(1, 61):
-            plaza = parking.estado_plazas[i]
+            plaza = estado_plazas[i]
             if plaza == "Libre":
                 print("Plaza " + str(i) + ": Libre    ", end='')
                 if i % 5 == 0:
@@ -73,36 +86,42 @@ class AbonadosService:
 
         plaza_parking = int(input("\n\nPara terminar, elije una de las siguientes plazas: "))
 
-        parking.estado_plazas[plaza_parking] = "Reservada libre"
+        estado_plazas[plaza_parking] = "Reservada libre"
         pin = random.randint(100000, 999999)
 
         fecha_activacion_abono = datetime.now()
-        nuevo_abonado = Abonado(nombre=nombre, apellidos=apellidos, gmail=gmail, dni=dni, tarjeta=tajeta,
+        nuevo_abonado = Abonado(nombre=nombre, apellidos=apellidos, gmail=gmail, dni=dni, tarjeta=tarjeta,
                                 tipo_abono=tipo_abono, vehiculo=nuevo_vehiculo, plaza_parking=plaza_parking,
                                 fecha_activacion_abono=fecha_activacion_abono,
                                 fecha_caducidad_abono=fecha_caducidad_abono, fecha_deposito='', pin=pin)
 
-        parking.lista_abonados.append(nuevo_abonado)
+        lista_fichero_abonados.append(nuevo_abonado)
 
         fichero_abonados = open('Ficheros/listado_abonados', 'wb')
-        pickle.dump(parking.lista_abonados, fichero_abonados)
+        pickle.dump(lista_fichero_abonados, fichero_abonados)
         fichero_abonados.close()
 
-        fichero_recaudacion_abonados = open('Ficheros/fichero_recaudacion_abonados', 'wb')
-        pickle.dump(parking.recaudacion_abonos, fichero_recaudacion_abonados)
-        fichero_recaudacion_abonados.close()
+        recaudacion_abonados = open('Ficheros/recaudacion_abonados', 'wb')
+        pickle.dump(fichero_recaudacion_abonados, recaudacion_abonados)
+        recaudacion_abonados.close()
 
-    def modificar_informacion_personal_abonado(self, parking):
+        estados_plazas = open('Ficheros/estado_plazas', 'wb')
+        pickle.dump(estado_plazas, estados_plazas)
+        estados_plazas.close()
+
+    def modificar_informacion_personal_abonado(self):
 
         dni = input("Introduce tu DNI: ")
 
-        abonados = parking.lista_abonados
+        f_abonados = open('Ficheros/listado_abonados', 'rb')
+        lista_fichero_abonados = pickle.load(f_abonados)
+        f_abonados.close()
+
         existe = False
-        for abonado in abonados:
+        for abonado in lista_fichero_abonados:
             if abonado.dni == dni:
                 edit_abonado = abonado
                 existe = True
-
         if not existe:
             print("No se ha encontrado ningún usuario con DNI: "+dni)
         else:
@@ -129,16 +148,23 @@ class AbonadosService:
                 print("Opción incorrecta")
 
             fichero_abonados = open('Ficheros/listado_abonados', 'wb')
-            pickle.dump(parking.lista_abonados, fichero_abonados)
+            pickle.dump(lista_fichero_abonados, fichero_abonados)
             fichero_abonados.close()
 
-    def modificar_abono(self, parking):
+    def modificar_abono(self):
 
         dni = input("Introduce tu DNI: ")
 
-        abonados = parking.lista_abonados
+        f_abonados = open('Ficheros/listado_abonados', 'rb')
+        lista_fichero_abonados = pickle.load(f_abonados)
+        f_abonados.close()
+
+        f_recaudacion_abonados = open('Ficheros/recaudacion_abonados', 'rb')
+        fichero_recaudacion_abonados = pickle.load(f_recaudacion_abonados)
+        f_recaudacion_abonados.close()
+
         existe = False
-        for abonado in abonados:
+        for abonado in lista_fichero_abonados:
             if abonado.dni == dni:
                 edit_abonado = abonado
                 existe = True
@@ -156,38 +182,45 @@ class AbonadosService:
                 edit_abonado.tipo_abono = 'mensual'
                 edit_abonado.fecha_caducidad_abono = datetime.now() + timedelta(days=30)
                 edit_abonado.fecha_activacion_abono = datetime.now()
-                parking.recaudacion_abonos[edit_abonado.tarjeta] = parking.recaudacion_abonos[edit_abonado.tarjeta] + 25
+                fichero_recaudacion_abonados[edit_abonado.tarjeta] = fichero_recaudacion_abonados[edit_abonado.tarjeta] + 25
             elif opcion_abono == 2:
                 edit_abonado.tipo_abono = 'trimestral'
                 edit_abonado.fecha_caducidad_abono = datetime.now() + timedelta(days=90)
                 edit_abonado.fecha_activacion_abono = datetime.now()
-                parking.recaudacion_abonos[edit_abonado.tarjeta] = parking.recaudacion_abonos[edit_abonado.tarjeta] + 70
+                fichero_recaudacion_abonados[edit_abonado.tarjeta] = fichero_recaudacion_abonados[edit_abonado.tarjeta] + 70
             elif opcion_abono == 3:
                 edit_abonado.tipo_abono = 'semestral'
                 edit_abonado.fecha_caducidad_abono = datetime.now() + timedelta(days=183)
                 edit_abonado.fecha_activacion_abono = datetime.now()
-                parking.recaudacion_abonos[edit_abonado.tarjeta] = parking.recaudacion_abonos[edit_abonado.tarjeta] + 130
+                fichero_recaudacion_abonados[edit_abonado.tarjeta] = fichero_recaudacion_abonados[edit_abonado.tarjeta] + 130
             if opcion_abono == 4:
                 edit_abonado.tipo_abono = 'anual'
                 edit_abonado.fecha_caducidad_abono = datetime.now() + timedelta(days=365)
                 edit_abonado.fecha_activacion_abono = datetime.now()
-                parking.recaudacion_abonos[edit_abonado.tarjeta] = parking.recaudacion_abonos[edit_abonado.tarjeta] + 200
+                fichero_recaudacion_abonados[edit_abonado.tarjeta] = fichero_recaudacion_abonados[edit_abonado.tarjeta] + 200
 
         fichero_abonados = open('Ficheros/listado_abonados', 'wb')
-        pickle.dump(parking.lista_abonados, fichero_abonados)
+        pickle.dump(lista_fichero_abonados, fichero_abonados)
         fichero_abonados.close()
 
-        fichero_recaudacion_abonados = open('Ficheros/fichero_recaudacion_abonados', 'wb')
-        pickle.dump(parking.recaudacion_abonos, fichero_recaudacion_abonados)
-        fichero_recaudacion_abonados.close()
+        recaudacion_abonados = open('Ficheros/recaudacion_abonados', 'wb')
+        pickle.dump(fichero_recaudacion_abonados, recaudacion_abonados)
+        recaudacion_abonados.close()
 
-    def baja_abonado(self, parking):
+    def baja_abonado(self):
 
         dni = input("Introduce tu DNI: ")
 
-        abonados = parking.lista_abonados
+        f_abonados = open('Ficheros/listado_abonados', 'rb')
+        lista_fichero_abonados = pickle.load(f_abonados)
+        f_abonados.close()
+
+        f_estado_plazas = open('Ficheros/estado_plazas', 'rb')
+        fichero_estado_plazas = pickle.load(f_estado_plazas)
+        f_estado_plazas.close()
+
         existe = False
-        for abonado in abonados:
+        for abonado in lista_fichero_abonados:
             if abonado.dni == dni:
                 elim_abonado = abonado
                 existe = True
@@ -195,7 +228,16 @@ class AbonadosService:
         if not existe:
             print("No se ha encontrado ningún usuario con DNI: " + dni)
         else:
-            parking.lista_abonados.remove(elim_abonado)
+            lista_fichero_abonados.remove(elim_abonado)
+            fichero_estado_plazas[elim_abonado.plaza_parking] = 'Libre'
+
+        fichero_abonados = open('./Ficheros/listado_abonados', 'wb')
+        pickle.dump(lista_fichero_abonados, fichero_abonados)
+        fichero_abonados.close()
+
+        estados_plazas = open('Ficheros/estado_plazas', 'wb')
+        pickle.dump(fichero_estado_plazas, estados_plazas)
+        estados_plazas.close()
 
     def caducidad_abonos(self, parking):
 
