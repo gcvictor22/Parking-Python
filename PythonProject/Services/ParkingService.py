@@ -43,6 +43,7 @@ class ParkingService:
             it = 1
             salir = False
             while not salir:
+                it += 1
                 if estado_plazas[it] == "Libre":
                     estado_plazas[it] = "Ocupada"
                     plaza_asignada = it

@@ -7,6 +7,8 @@ from Models.Parking import Parking
 from Models.Vehiculo import Vehiculo
 
 
+# Este fichero lo he creado para inicializar unos datos de prueba
+
 class MainService:
     parking = Parking(plazas_totales=60, plazas_turismo=42, plazas_motos=9, plazas_minusvalidos=9)
     recaudacion_abonos = {}
@@ -19,11 +21,11 @@ class MainService:
         estado_plazas[i] = "Libre"
 
     v1 = Vehiculo(matricula='1234 AAA', tipo='Moto')
-    fecha_activacion_bono1 = datetime(year=2022, month=10, day=7, hour=12, minute=36, second=51)
-    fecha_caducidad_abono1 = fecha_activacion_bono1 + timedelta(days=183)
+    fecha_activacion_bono1 = datetime(year=2022, month=12, day=23, hour=12, minute=36, second=51)
+    fecha_caducidad_abono1 = fecha_activacion_bono1 + timedelta(days=30)
     ab1 = Abonado(nombre='John', apellidos='Doe', gmail='johndoe@gmail.com', dni='12345678-A',
                   tarjeta='1234 5678 9123 4567',
-                  tipo_abono='semestral', vehiculo=v1, plaza_parking=42,
+                  tipo_abono='mensual', vehiculo=v1, plaza_parking=42,
                   fecha_activacion_abono=fecha_activacion_bono1,
                   fecha_caducidad_abono=fecha_caducidad_abono1, fecha_deposito='', pin=478392)
     estado_plazas[ab1.plaza_parking] = "Reservada libre"
@@ -34,7 +36,7 @@ class MainService:
 
     v2 = Vehiculo(matricula='5678 BBB', tipo='Turismo')
     fecha_activacion_bono2 = datetime(year=2023, month=1, day=10, hour=8, minute=47, second=23)
-    fecha_caducidad_abono2 = fecha_activacion_bono1 + timedelta(days=90)
+    fecha_caducidad_abono2 = fecha_activacion_bono2 + timedelta(days=90)
     ab2 = Abonado(nombre='Eladio', apellidos='Carrion', gmail='hugoboss@gmail.com', dni='87654321-Z',
                   tarjeta='1111 2222 3333 4444',
                   tipo_abono='trimestral', vehiculo=v2, plaza_parking=24,

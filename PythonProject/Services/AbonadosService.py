@@ -5,16 +5,12 @@ from Models.Vehiculo import Vehiculo
 from datetime import datetime
 from datetime import timedelta
 
-from Services.PickleService import PickleService
-
-pickle_service = PickleService()
-
 
 class AbonadosService:
 
     def crear_abonado(self, parking, f_lista_abonados, f_recaudacion_abonados, f_estado_plazas):
 
-        for i in range(1, 61):
+        for i in f_estado_plazas[:5]:
             plaza = f_estado_plazas[i]
             if plaza == "Libre":
                 print("Plaza " + str(i) + ": Libre    ", end='')
@@ -112,16 +108,14 @@ class AbonadosService:
 
             if opcion_editar == 1:
                 edit_abonado.nombre = input("Escribe el nuevo nombre: ")
-                edit_abonado.apellidos = input("Escribe los nuevos apellidos: ")
             elif opcion_editar == 2:
-                edit_abonado.gmail = input("Escribe el nuevo gmail: ")
+                edit_abonado.apellidos = input("Escribe los nuevos apellidos: ")
             elif opcion_editar == 3:
-                edit_abonado.tarjeta = input("Introduce el número de tarjeta: ")
+                edit_abonado.gmail = input("Escribe el nuevo gmail: ")
             elif opcion_editar == 4:
                 edit_abonado.nombre = input("Escribe el nuevo nombre: ")
                 edit_abonado.apellidos = input("Escribe los nuevos apellidos: ")
                 edit_abonado.gmail = input("Escribe el nuevo gmail: ")
-                edit_abonado.tarjeta = input("Introduce el número de tarjeta: ")
             else:
                 print("Opción incorrecta")
 
@@ -202,17 +196,20 @@ class AbonadosService:
             for abonado in f_listado_abonados:
                 if mes_comprobar < abonado.fecha_caducidad_abono < mes_fin:
                     resto = abonado.fecha_caducidad_abono - datetime.now()
-                    print("El abono del usuario con Gmail: " + abonado.gmail + " caduca este mes.")
-                    print("El abono caduca dentro de: " + str(resto[0]))
+                    print("El abono del usuario con Gmail: " + abonado.gmail + " caduca ese mes.")
+                    print("El abono caduca dentro de: " + str(resto))
+                    print("=============================================================================")
+
 
         elif opcion == 2:
 
-            fecha_final = datetime.now() + timedelta(days=30)
+            fecha_final = datetime.now() + timedelta(days=10)
             for abonado in f_listado_abonados:
                 if datetime.now() < abonado.fecha_caducidad_abono < fecha_final:
                     resto = abonado.fecha_caducidad_abono - datetime.now()
-                    print("El abono del usuario con Gmail: " + abonado.gmail + " caduca este en menos de 10 días.")
-                    print("El abono caduca dentro de: " + str(resto[0]))
+                    print("El abono del usuario con Gmail: " + abonado.gmail + " caduca en menos de 10 días.")
+                    print("El abono caduca dentro de: " + str(resto))
+                    print("=============================================================================")
 
         else:
             print("Opcion incorrecta")
