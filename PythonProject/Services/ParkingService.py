@@ -17,41 +17,42 @@ class ParkingService:
 
     def depositar_vehiculo(self, parking):
 
-        matricula = input('Introduce la matrícula del vehiculo: ')
-        nuevo_vehiculo = any
+        if parking.plazas_totales > 0:
+            matricula = input('Introduce la matrícula del vehiculo: ')
+            nuevo_vehiculo = any
 
-        print('¿Qué tipo de vehiculo es?'
-              '\n1. Turismo'
-              '\n2. Moto'
-              '\n3. Movilidad reducidad')
+            print('¿Qué tipo de vehiculo es?'
+                  '\n1. Turismo'
+                  '\n2. Moto'
+                  '\n3. Movilidad reducidad')
 
-        tipo = int(input('Opcion: '))
-        if tipo == 1 and parking.plazas_turismo > 0:
-            nuevo_vehiculo = Vehiculo(matricula, 'Turismo')
-            parking.plazas_turismo -= 1
-        elif tipo == 2 and parking.plazas_motos > 0:
-            nuevo_vehiculo = Vehiculo(matricula, 'Moto')
-            parking.plazas_motos -= 1
-        elif tipo == 3 and parking.plazas_minusvalidos > 0:
-            nuevo_vehiculo = Vehiculo(matricula, 'Minusvalido')
-            parking.plazas_minusvalidos -= 1
+            tipo = int(input('Opcion: '))
+            if tipo == 1 and parking.plazas_turismo > 0:
+                nuevo_vehiculo = Vehiculo(matricula, 'Turismo')
+                parking.plazas_turismo -= 1
+            elif tipo == 2 and parking.plazas_motos > 0:
+                nuevo_vehiculo = Vehiculo(matricula, 'Moto')
+                parking.plazas_motos -= 1
+            elif tipo == 3 and parking.plazas_minusvalidos > 0:
+                nuevo_vehiculo = Vehiculo(matricula, 'Movilidad reducidad')
+                parking.plazas_minusvalidos -= 1
 
-        parking.plazas_totales -= 1
+            parking.plazas_totales -= 1
 
-        estado_plazas = parking.estado_plazas
-        plaza_asignada = any
-        for i in range(1, 61):
-            if estado_plazas[i] == "Libre":
-                estado_plazas[i] = "Ocupada"
-                plaza_asignada = i
-                break
+            estado_plazas = parking.estado_plazas
+            it = 1
+            salir = False
+            while not salir:
+                if estado_plazas[it] == "Libre":
+                    estado_plazas[it] = "Ocupada"
+                    plaza_asignada = it
+                    salir = True
 
-        pin = random.randint(100000, 999999)
-        cliente = Cliente(plaza_asignada, nuevo_vehiculo, datetime.datetime.now(), pin)
-        parking.lista_vehiculos.append(nuevo_vehiculo)
-        parking.lista_clientes.append(cliente)
-        ticket = Ticket(matricula, datetime.datetime.now(), plaza_asignada, pin)
-        ticket.__str__()
+            pin = random.randint(100000, 999999)
+            cliente = Cliente(plaza_asignada, nuevo_vehiculo, datetime.datetime.now(), pin)
+            parking.lista_clientes.append(cliente)
+            ticket = Ticket(matricula, datetime.datetime.now(), plaza_asignada, pin)
+            ticket.__str__()
 
     def depositar_vehiculo_abonado(self, parking):
 

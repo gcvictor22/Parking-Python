@@ -1,3 +1,4 @@
+import pickle
 import random
 
 from Models.Abonado import Abonado
@@ -83,6 +84,14 @@ class AbonadosService:
 
         parking.lista_abonados.append(nuevo_abonado)
 
+        fichero_abonados = open('Ficheros/listado_abonados', 'wb')
+        pickle.dump(parking.lista_abonados, fichero_abonados)
+        fichero_abonados.close()
+
+        fichero_recaudacion_abonados = open('Ficheros/fichero_recaudacion_abonados', 'wb')
+        pickle.dump(parking.recaudacion_abonos, fichero_recaudacion_abonados)
+        fichero_recaudacion_abonados.close()
+
     def modificar_informacion_personal_abonado(self, parking):
 
         dni = input("Introduce tu DNI: ")
@@ -118,6 +127,10 @@ class AbonadosService:
                 edit_abonado.tarjeta = input("Introduce el número de tarjeta: ")
             else:
                 print("Opción incorrecta")
+
+            fichero_abonados = open('Ficheros/listado_abonados', 'wb')
+            pickle.dump(parking.lista_abonados, fichero_abonados)
+            fichero_abonados.close()
 
     def modificar_abono(self, parking):
 
@@ -159,6 +172,14 @@ class AbonadosService:
                 edit_abonado.fecha_caducidad_abono = datetime.now() + timedelta(days=365)
                 edit_abonado.fecha_activacion_abono = datetime.now()
                 parking.recaudacion_abonos[edit_abonado.tarjeta] = parking.recaudacion_abonos[edit_abonado.tarjeta] + 200
+
+        fichero_abonados = open('Ficheros/listado_abonados', 'wb')
+        pickle.dump(parking.lista_abonados, fichero_abonados)
+        fichero_abonados.close()
+
+        fichero_recaudacion_abonados = open('Ficheros/fichero_recaudacion_abonados', 'wb')
+        pickle.dump(parking.recaudacion_abonos, fichero_recaudacion_abonados)
+        fichero_recaudacion_abonados.close()
 
     def baja_abonado(self, parking):
 
