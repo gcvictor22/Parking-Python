@@ -1,14 +1,13 @@
 from datetime import datetime
 from datetime import timedelta
-import pickle
 
 from Models.Abonado import Abonado
 from Models.Cliente import Cliente
 from Models.Parking import Parking
 from Models.Vehiculo import Vehiculo
 
-class MainService:
 
+class MainService:
     parking = Parking(plazas_totales=60, plazas_turismo=42, plazas_motos=9, plazas_minusvalidos=9)
     recaudacion_abonos = {}
     estado_plazas = {}
@@ -64,7 +63,7 @@ class MainService:
     lista_clientes.append(c2)
 
     v5 = Vehiculo(matricula='1818 KMZ', tipo='Turismo')
-    c3 = Cliente(fecha_deposito=datetime(year=2023, month=1, day=17, hour=23, minute=12, second=21), plaza_parking=4,
+    c3 = Cliente(fecha_deposito=datetime(year=2023, month=1, day=17, hour=23, minute=12, second=21), plaza_parking=49,
                  vehiculo=v5, pin=917034)
     estado_plazas[c3.plaza_parking] = "Ocupada"
     parking.plazas_turismo -= 1
@@ -78,23 +77,3 @@ class MainService:
     parking.plazas_minusvalidos -= 1
     parking.plazas_totales -= 1
     lista_clientes.append(c4)
-
-    fichero_abonados = open('./Ficheros/listado_abonados', 'wb')
-    pickle.dump(lista_abonados, fichero_abonados)
-    fichero_abonados.close()
-
-    fichero_clientes = open('./Ficheros/listado_clientes', 'wb')
-    pickle.dump(lista_clientes, fichero_clientes)
-    fichero_clientes.close()
-
-    recaudacion_abonados = open('Ficheros/recaudacion_abonados', 'wb')
-    pickle.dump(recaudacion_abonos, recaudacion_abonados)
-    recaudacion_abonados.close()
-
-    estados_plazas = open('Ficheros/estado_plazas', 'wb')
-    pickle.dump(estado_plazas, estados_plazas)
-    estados_plazas.close()
-
-    recaudacion_clientes = open('Ficheros/recaudacion', 'wb')
-    pickle.dump(recaudacion, recaudacion_clientes)
-    recaudacion_clientes.close()
