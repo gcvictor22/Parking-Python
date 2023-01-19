@@ -21,7 +21,8 @@ class AdministradorService:
         sum = 0.0
         cant = 0
 
-        print("Fecha de inicio de la recaudación")
+        print("Fecha de inicio de la recaudación"
+              "---------------------------------")
         try:
             anho1 = int(input("Año: "))
             mes1 = int(input("Mes: "))
@@ -31,7 +32,8 @@ class AdministradorService:
             if 1 > mes1 > 12 or 1 > dia1 > 31 or 0 > hora1 > 24 or 0 > minuto1 > 60:
                 raise ValueError
             else:
-                print("Fecha final de la recaudación")
+                print("Fecha final de la recaudación"
+                      "-----------------------------")
                 try:
                     anho2 = int(input("Año: "))
                     mes2 = int(input("Mes: "))
@@ -60,9 +62,9 @@ class AdministradorService:
                             print("Has introducido mal las fechas, primero introduce desde que quieres hacer la "
                                   "comprobación")
                 except ValueError:
-                    print("Error. Has introducido mal la fecha")
+                    print("⚠️ Error. Has introducido mal la fecha ⚠️")
         except ValueError:
-            print("Error. Has introducido mal la fecha")
+            print("⚠️ Error. Has introducido mal la fecha ⚠️")
 
     def consultar_abonados(self, f_recaudacion_abonados, f_lista_abonados):
 
@@ -72,7 +74,7 @@ class AdministradorService:
             sum += v
 
         for a in f_lista_abonados:
-            print(a)
+            print(a.__str__())
             print("==========================================================================")
 
         print("\n Se han recaudado un total de " + str(sum) + "€")

@@ -4,6 +4,9 @@ import datetime
 from Models.Cliente import Cliente
 from Models.Vehiculo import Vehiculo
 from Models.Ticket import Ticket
+from Views.ViewsPrint import ViewPrint
+
+views = ViewPrint()
 
 
 class ParkingService:
@@ -20,18 +23,16 @@ class ParkingService:
         if parking.plazas_totales > 0:
             matricula = input('Introduce la matrícula del vehiculo: ')
 
-            for mat in f_lista_clientes:
-                if mat.vehiculo.matricula == matricula:
-                    depositar = True
+            it = 0
+            existe = False
+            while not existe and it < len(f_lista_clientes):
+                if f_lista_clientes[it].vehiculo.matricula == matricula:
+                    existe = True
+                it += 1
 
-            if depositar:
-                print('¿Qué tipo de vehiculo es?'
-                      '\n1. Turismo'
-                      '\n2. Moto'
-                      '\n3. Movilidad reducidad')
-
+            if not existe:
                 try:
-                    tipo = int(input('Opcion: '))
+                    tipo = int(input(views.elegir_tipo_vehiculo()))
                     if tipo != 1 and tipo != 2 and tipo != 3:
                         raise ValueError
                     else:
@@ -39,22 +40,25 @@ class ParkingService:
                             nuevo_vehiculo = Vehiculo(matricula, 'Turismo')
                             parking.plazas_turismo -= 1
                             self.comprobar_plazas_depositar(parking=parking, f_estado_plazas=f_estado_plazas,
-                                                            f_lista_clientes=f_lista_clientes, nuevo_vehiculo=nuevo_vehiculo,
+                                                            f_lista_clientes=f_lista_clientes,
+                                                            nuevo_vehiculo=nuevo_vehiculo,
                                                             matricula=matricula)
                         elif tipo == 2 and parking.plazas_motos > 0:
                             nuevo_vehiculo = Vehiculo(matricula, 'Moto')
                             parking.plazas_motos -= 1
                             self.comprobar_plazas_depositar(parking=parking, f_estado_plazas=f_estado_plazas,
-                                                            f_lista_clientes=f_lista_clientes, nuevo_vehiculo=nuevo_vehiculo,
+                                                            f_lista_clientes=f_lista_clientes,
+                                                            nuevo_vehiculo=nuevo_vehiculo,
                                                             matricula=matricula)
                         elif tipo == 3 and parking.plazas_minusvalidos > 0:
                             nuevo_vehiculo = Vehiculo(matricula, 'Movilidad reducidad')
                             parking.plazas_minusvalidos -= 1
                             self.comprobar_plazas_depositar(parking=parking, f_estado_plazas=f_estado_plazas,
-                                                            f_lista_clientes=f_lista_clientes, nuevo_vehiculo=nuevo_vehiculo,
+                                                            f_lista_clientes=f_lista_clientes,
+                                                            nuevo_vehiculo=nuevo_vehiculo,
                                                             matricula=matricula)
                 except ValueError:
-                    print("Error. introduce 1, 2, 3 o 4")
+                    print("⚠️ Error. introduce 1, 2, 3 o 4 ⚠️")
             else:
                 print("Ya hay un vehiculo que tiene la matrícula introducida")
 
@@ -82,19 +86,25 @@ class ParkingService:
         matricula = input("Introducza la matrícula de su vehículo: ")
         dni = input("Introduzca su DNI: ")
 
-        for abonado in f_lista_abonados:
-            if abonado.vehiculo.matricula.upper() == matricula.upper() and abonado.dni.upper() == dni.upper():
-                if abonado.fecha_caducidad_abono > datetime.datetime.now():
-                    f_estado_plazas[abonado.plaza_parking] = "Reservada Ocupada"
-                    f_lista_clientes.append(abonado)
-                    ticket = Ticket(abonado.vehiculo.matricula, datetime.datetime.now(), abonado.plaza_parking,
-                                    abonado.pin)
+        it = 0
+        existe = False
+        while not existe and it < len(f_lista_abonados):
+            if f_lista_abonados[it].vehiculo.matricula.upper() == matricula.upper() and f_lista_abonados[it].dni.upper() == dni.upper():
+                if f_lista_abonados[it].fecha_caducidad_abono > datetime.datetime.now():
+                    f_estado_plazas[f_lista_abonados[it].plaza_parking] = "Reservada Ocupada"
+                    f_lista_clientes.append(f_lista_abonados[it])
+                    ticket = Ticket(f_lista_abonados[it].vehiculo.matricula, datetime.datetime.now(),
+                                    f_lista_abonados[it].plaza_parking,
+                                    f_lista_abonados[it].pin)
                     ticket.__str__()
                 else:
                     print("Tu abono ha caducado")
-            else:
-                print("No se ha encontrado ninguna ralación de un vehiculo con matrícula: " + matricula.upper() +
-                      "y abonado con DNI: " + dni)
+                    pass
+            it += 1
+
+        if not existe:
+            print("No se ha encontrado ninguna ralación de un vehiculo con matrícula: " + matricula.upper() +
+                  " y abonado con DNI: " + dni.upper())
 
     def retirar_vehiculo(self, parking, f_lista_clientes, f_estado_plazas, f_recaudacion):
 
@@ -123,7 +133,8 @@ class ParkingService:
                                     val = 0.1
                                     parking.plazas_minusvalidos += 1
                                 parking.plazas_totales += 1
-                                tiempo_estacionado = divmod((datetime.datetime.now() - cliente.fecha_deposito).total_seconds(), 60)[0]
+                                tiempo_estacionado = \
+                                    divmod((datetime.datetime.now() - cliente.fecha_deposito).total_seconds(), 60)[0]
                                 f_recaudacion[datetime.datetime.now()] = val * tiempo_estacionado
                                 f_lista_clientes.remove(cliente)
                                 print("\nVehículo retirado con éxito\n")
@@ -131,9 +142,9 @@ class ParkingService:
                         if not retirado:
                             print("No se ha podido asociar los datos introducidos a un vehículo")
                 except ValueError:
-                    print("Error. Indroduzca un pin válido, de 6 dígitos")
+                    print("⚠️ Error. Indroduzca un pin válido, de 6 dígitos ⚠️")
         except ValueError:
-            print("Error. No existe la plaza "+plaza_parking)
+            print("⚠️ Error. No existe la plaza " + plaza_parking + " ⚠️")
 
     def retirar_vehiculo_abonado(self, f_lista_clientes, f_estado_plazas):
 
@@ -160,6 +171,6 @@ class ParkingService:
                         if not existe:
                             print("No se ha encontrado ningún vehículo con los datos introducidos")
                 except ValueError:
-                    print("Error. Indroduzca un pin válido, de 6 dígitos")
+                    print("⚠️ Error. Indroduzca un pin válido, de 6 dígitos ⚠️")
         except ValueError:
-            print("Error. No existe la plaza "+plaza_parking)
+            print("⚠️ Error. No existe la plaza " + plaza_parking + " ⚠️")

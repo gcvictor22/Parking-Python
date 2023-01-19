@@ -21,14 +21,14 @@ class MainService:
         estado_plazas[i] = "Libre"
 
     v1 = Vehiculo(matricula='1234-AAA', tipo='Moto')
-    fecha_activacion_bono1 = datetime(year=2022, month=12, day=23, hour=12, minute=36, second=51)
+    fecha_activacion_bono1 = datetime(year=2022, month=12, day=5, hour=21, minute=23, second=51)
     fecha_caducidad_abono1 = fecha_activacion_bono1 + timedelta(days=30)
     ab1 = Abonado(nombre='John', apellidos='Doe', gmail='johndoe@gmail.com', dni='12345678A',
                   tarjeta='1234567891234567',
                   tipo_abono='mensual', vehiculo=v1, plaza_parking=42,
                   fecha_activacion_abono=fecha_activacion_bono1,
                   fecha_caducidad_abono=fecha_caducidad_abono1, fecha_deposito='', pin=478392)
-    estado_plazas[ab1.plaza_parking] = "Reservada libre"
+    estado_plazas[ab1.plaza_parking] = "Reservada ocupada"
     recaudacion_abonos[ab1.tarjeta] = 130
     parking.plazas_motos -= 1
     parking.plazas_totales -= 1

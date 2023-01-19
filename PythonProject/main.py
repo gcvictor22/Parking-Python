@@ -1,8 +1,12 @@
+from datetime import datetime
+from datetime import timedelta
+
 from Services.MainService import MainService
 from Services.ParkingService import ParkingService
 from Services.AbonadosService import AbonadosService
 from Services.AdministradorService import AdministradorService
 from Services.PickleService import PickleService
+from Views.ViewsPrint import ViewPrint
 from threading import Thread
 import time
 
@@ -11,21 +15,24 @@ abonados_service = AbonadosService()
 admin_service = AdministradorService()
 main_service = MainService()
 pickle_service = PickleService()
+views = ViewPrint()
 
-lista_abonados = pickle_service.cargar_lista_abonados()
-lista_clientes = pickle_service.cargar_lista_clientes()
-estado_plazas = pickle_service.cargar_estado_plazas()
-recaudacion_abonados = pickle_service.cargar_recaudacion_abonados()
-recaudacion = pickle_service.cargar_recaudacion()
-parking = pickle_service.cargar_parking()
+# lista_abonados = pickle_service.cargar_lista_abonados()
+# lista_clientes = pickle_service.cargar_lista_clientes()
+# estado_plazas = pickle_service.cargar_estado_plazas()
+# recaudacion_abonados = pickle_service.cargar_recaudacion_abonados()
+# recaudacion = pickle_service.cargar_recaudacion()
+# parking = pickle_service.cargar_parking()
 
 
-#lista_abonados = main_service.lista_abonados
-#lista_clientes = main_service.lista_clientes
-#estado_plazas = main_service.estado_plazas
-#recaudacion_abonados = main_service.recaudacion_abonos
-#recaudacion = main_service.recaudacion
-#parking = main_service.parking
+lista_abonados = main_service.lista_abonados
+lista_clientes = main_service.lista_clientes
+estado_plazas = main_service.estado_plazas
+recaudacion_abonados = main_service.recaudacion_abonos
+recaudacion = main_service.recaudacion
+parking = main_service.parking
+
+
 def actualizado_automatico():
     on = True
     while on:
@@ -38,6 +45,8 @@ def actualizado_automatico():
                 i = 300
                 on = False
 
+        abonados_service.comprobar_baja_abonado(f_lista_abonados=lista_abonados, f_estado_plazas=estado_plazas)
+
         pickle_service.actualizar_lista_abonados(lista_abonados)
         pickle_service.actualizar_lista_clientes(lista_clientes)
         pickle_service.actualizar_estado_plazas(estado_plazas)
@@ -48,14 +57,11 @@ def actualizado_automatico():
 
 
 def main_de_verdad():
+    abonados_service.comprobar_baja_abonado(f_lista_abonados=lista_abonados, f_estado_plazas=estado_plazas)
     opcion = int
     while opcion != 0:
         try:
-            opcion = int(input("\n¿Donde quieres acceder?"
-                               "\n0. Salir"
-                               "\n1. Zona cliente"
-                               "\n2. Zona administrador"
-                               "\nOpcion: "))
+            opcion = int(input(views.opciones_zonas()))
             if opcion != 0 and opcion != 1 and opcion != 2:
                 raise ValueError
             else:
@@ -69,13 +75,7 @@ def main_de_verdad():
                     pass
                 if opcion == 1:
                     try:
-                        opcion_cliente = int(input("¿Qué deseas hacer?"
-                                                   "\n0. Salir"
-                                                   "\n1. Depositar vehículo"
-                                                   "\n2. Retirar vehículo"
-                                                   "\n3. Depositar vehículo (abonado)"
-                                                   "\n4. Retirar vehículo (abonado)"
-                                                   "\nOpcion: "))
+                        opcion_cliente = int(input(views.opcion_cliente()))
                         if opcion_cliente != 0 and opcion_cliente != 1 and opcion_cliente != 2 and opcion_cliente != 3 and opcion_cliente != 4:
                             raise ValueError
                         else:
@@ -98,18 +98,11 @@ def main_de_verdad():
                                 parking_service.retirar_vehiculo_abonado(f_estado_plazas=estado_plazas,
                                                                          f_lista_clientes=lista_clientes)
                     except ValueError:
-                        print("Error, introduce 0, 1, 2, 3 o 4")
+                        print("⚠️ ️Error. Introduce 0, 1, 2, 3 o 4 ⚠️")
 
                 elif opcion == 2:
                     try:
-                        opcion_admin = int(input("¿Qué deseas hacer?"
-                                                 "\n0. Salir"
-                                                 "\n1. Ver estado del parking"
-                                                 "\n2. Facturación"
-                                                 "\n3. Consulta de abonados"
-                                                 "\n4. Gestión abonados"
-                                                 "\n5. Caducidad abonos"
-                                                 "\nOpcion: "))
+                        opcion_admin = int(input(views.opcion_admin()))
                         if opcion_admin != 0 and opcion_admin != 1 and opcion_admin != 2 and opcion_admin != 3 and opcion_admin != 4 and opcion_admin != 5:
                             raise ValueError
                         else:
@@ -125,14 +118,8 @@ def main_de_verdad():
                             elif opcion_admin == 4:
 
                                 try:
-                                    opcion_abono = int(input("¿Qué deseas hacer?"
-                                                             "\n0. Salir"
-                                                             "\n1. Darme de alta como abonado"
-                                                             "\n2. Modificar información personal"
-                                                             "\n3. Renovar abono"
-                                                             "\n4. Darme de baja"
-                                                             "\nOpcion: "))
-                                    if opcion_abono !=0 and opcion_abono !=1 and opcion_abono !=2 and opcion_abono !=3 and opcion_abono !=4:
+                                    opcion_abono = int(input(views.opcion_abono()))
+                                    if opcion_abono != 0 and opcion_abono != 1 and opcion_abono != 2 and opcion_abono != 3 and opcion_abono != 4:
                                         raise ValueError
                                     else:
                                         if opcion_abono == 0:
@@ -151,17 +138,15 @@ def main_de_verdad():
                                         elif opcion_abono == 4:
                                             abonados_service.baja_abonado(f_estado_plazas=estado_plazas,
                                                                           f_listado_abonados=lista_abonados)
-                                        else:
-                                            print("Opción incorrecta")
                                 except ValueError:
-                                    print("Error, introduce 0, 1, 2, 3 o 4")
+                                    print("⚠️ Error. Introduce 0, 1, 2, 3 o 4 ⚠️")
 
                             elif opcion_admin == 5:
                                 abonados_service.caducidad_abonos(f_listado_abonados=lista_abonados)
                     except ValueError:
-                        print("Error, introduce 0, 1, 2, 3, 4 o 5")
+                        print("⚠️ Error. Introduce 0, 1, 2, 3, 4 o 5 ⚠️")
         except ValueError:
-            print("Error, introduce 0, 1 o 2")
+            print("⚠️ Error. Introduce 0, 1 o 2 ⚠️")
 
 
 main_thread = Thread(target=main_de_verdad)
