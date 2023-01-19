@@ -19,41 +19,63 @@ class ParkingService:
 
         if parking.plazas_totales > 0:
             matricula = input('Introduce la matrícula del vehiculo: ')
-            nuevo_vehiculo = any
 
-            print('¿Qué tipo de vehiculo es?'
-                  '\n1. Turismo'
-                  '\n2. Moto'
-                  '\n3. Movilidad reducidad')
+            for mat in f_lista_clientes:
+                if mat.vehiculo.matricula == matricula:
+                    depositar = True
 
-            tipo = int(input('Opcion: '))
-            if tipo == 1 and parking.plazas_turismo > 0:
-                nuevo_vehiculo = Vehiculo(matricula, 'Turismo')
-                parking.plazas_turismo -= 1
-            elif tipo == 2 and parking.plazas_motos > 0:
-                nuevo_vehiculo = Vehiculo(matricula, 'Moto')
-                parking.plazas_motos -= 1
-            elif tipo == 3 and parking.plazas_minusvalidos > 0:
-                nuevo_vehiculo = Vehiculo(matricula, 'Movilidad reducidad')
-                parking.plazas_minusvalidos -= 1
+            if depositar:
+                print('¿Qué tipo de vehiculo es?'
+                      '\n1. Turismo'
+                      '\n2. Moto'
+                      '\n3. Movilidad reducidad')
 
-            parking.plazas_totales -= 1
+                tipo = int(input('Opcion: '))
+                try:
+                    if tipo != 1 and tipo != 2 and tipo != 3:
+                        raise ValueError
+                    else:
+                        if tipo == 1 and parking.plazas_turismo > 0:
+                            nuevo_vehiculo = Vehiculo(matricula, 'Turismo')
+                            parking.plazas_turismo -= 1
+                            self.comprobar_plazas_depositar(parking=parking, f_estado_plazas=f_estado_plazas,
+                                                            f_lista_clientes=f_lista_clientes, nuevo_vehiculo=nuevo_vehiculo,
+                                                            matricula=matricula)
+                        elif tipo == 2 and parking.plazas_motos > 0:
+                            nuevo_vehiculo = Vehiculo(matricula, 'Moto')
+                            parking.plazas_motos -= 1
+                            self.comprobar_plazas_depositar(parking=parking, f_estado_plazas=f_estado_plazas,
+                                                            f_lista_clientes=f_lista_clientes, nuevo_vehiculo=nuevo_vehiculo,
+                                                            matricula=matricula)
+                        elif tipo == 3 and parking.plazas_minusvalidos > 0:
+                            nuevo_vehiculo = Vehiculo(matricula, 'Movilidad reducidad')
+                            parking.plazas_minusvalidos -= 1
+                            self.comprobar_plazas_depositar(parking=parking, f_estado_plazas=f_estado_plazas,
+                                                            f_lista_clientes=f_lista_clientes, nuevo_vehiculo=nuevo_vehiculo,
+                                                            matricula=matricula)
+                except ValueError:
+                    print("Error. introduce 1, 2, 3 o 4")
+            else:
+                print("Ya hay un vehiculo que tiene la matrícula introducida")
 
-            estado_plazas = f_estado_plazas
-            it = 1
-            salir = False
-            while not salir:
-                it += 1
-                if estado_plazas[it] == "Libre":
-                    estado_plazas[it] = "Ocupada"
-                    plaza_asignada = it
-                    salir = True
+    def comprobar_plazas_depositar(self, parking, f_estado_plazas, f_lista_clientes, nuevo_vehiculo, matricula):
+        parking.plazas_totales -= 1
 
-            pin = random.randint(100000, 999999)
-            cliente = Cliente(plaza_asignada, nuevo_vehiculo, datetime.datetime.now(), pin)
-            f_lista_clientes.append(cliente)
-            ticket = Ticket(matricula, datetime.datetime.now(), plaza_asignada, pin)
-            ticket.__str__()
+        estado_plazas = f_estado_plazas
+        it = 1
+        salir = False
+        while not salir:
+            it += 1
+            if estado_plazas[it] == "Libre":
+                estado_plazas[it] = "Ocupada"
+                plaza_asignada = it
+                salir = True
+
+        pin = random.randint(100000, 999999)
+        cliente = Cliente(plaza_asignada, nuevo_vehiculo, datetime.datetime.now(), pin)
+        f_lista_clientes.append(cliente)
+        ticket = Ticket(matricula, datetime.datetime.now(), plaza_asignada, pin)
+        ticket.__str__()
 
     def depositar_vehiculo_abonado(self, f_lista_abonados, f_estado_plazas, f_lista_clientes):
 
@@ -61,7 +83,7 @@ class ParkingService:
         dni = input("Introduzca su DNI: ")
 
         for abonado in f_lista_abonados:
-            if abonado.vehiculo.matricula.upper() == matricula.upper() and abonado.dni == dni:
+            if abonado.vehiculo.matricula.upper() == matricula.upper() and abonado.dni.upper() == dni.upper():
                 if abonado.fecha_caducidad_abono > datetime.datetime.now():
                     f_estado_plazas[abonado.plaza_parking] = "Reservada Ocupada"
                     f_lista_clientes.append(abonado)
@@ -78,40 +100,62 @@ class ParkingService:
 
         matricula = input("Introduzca la matrícula de su vehículo: ")
         plaza_parking = int(input("Introduzca la plaza de garaje: "))
-        pin = int(input("Por último, introduzca el pin que aparece en su ticket de depósito: "))
-
-        for cliente in f_lista_clientes:
-            if cliente.vehiculo.matricula == matricula and cliente.plaza_parking == plaza_parking and cliente.pin == pin:
-                f_estado_plazas[plaza_parking] = "Libre"
-                if cliente.vehiculo.tipo == "Turismo":
-                    val = 0.12
-                    parking.plazas_turismo += 1
-                elif cliente.vehiculo.tipo == "Moto":
-                    val = 0.08
-                    parking.plazas_motos += 1
-                else:
-                    val = 0.1
-                    parking.plazas_minusvalidos += 1
-                parking.plazas_totales += 1
-                tiempo_estacionado = divmod((datetime.datetime.now() - cliente.fecha_deposito).total_seconds(), 60)[0]
-                f_recaudacion[datetime.datetime.now()] = val * tiempo_estacionado
-                f_lista_clientes.remove(cliente)
-                print("\nVehículo retirado con éxito\n")
+        try:
+            if 1 > plaza_parking > 60:
+                raise ValueError
+            else:
+                pin = int(input("Por último, introduzca el pin que aparece en su ticket de depósito: "))
+                try:
+                    if 100000 > pin > 999999:
+                        raise ValueError
+                    else:
+                        for cliente in f_lista_clientes:
+                            if cliente.vehiculo.matricula.upper() == matricula.upper() and cliente.plaza_parking == plaza_parking and cliente.pin == pin:
+                                f_estado_plazas[plaza_parking] = "Libre"
+                                if cliente.vehiculo.tipo == "Turismo":
+                                    val = 0.12
+                                    parking.plazas_turismo += 1
+                                elif cliente.vehiculo.tipo == "Moto":
+                                    val = 0.08
+                                    parking.plazas_motos += 1
+                                else:
+                                    val = 0.1
+                                    parking.plazas_minusvalidos += 1
+                                parking.plazas_totales += 1
+                                tiempo_estacionado = divmod((datetime.datetime.now() - cliente.fecha_deposito).total_seconds(), 60)[0]
+                                f_recaudacion[datetime.datetime.now()] = val * tiempo_estacionado
+                                f_lista_clientes.remove(cliente)
+                                print("\nVehículo retirado con éxito\n")
+                except ValueError:
+                    print("Error. Indroduzca un pin válido, de 6 dígitos")
+        except ValueError:
+            print("Error. No existe la plaza "+plaza_parking)
 
     def retirar_vehiculo_abonado(self, f_lista_clientes, f_estado_plazas):
 
         matricula = input("Introduzca la matrícula de su vehículo: ")
         plaza_parking = int(input("Introduzca la plaza de garaje: "))
-        pin = int(input("Por último, introduzca el pin que aparece en su ticket de depósito: "))
+        try:
+            if 1 > plaza_parking > 60:
+                raise ValueError
+            else:
+                pin = int(input("Por último, introduzca el pin que aparece en su ticket de depósito: "))
+                try:
+                    if 100000 > pin > 999999:
+                        raise ValueError
+                    else:
+                        existe = False
+                        for abonado in f_lista_clientes:
+                            if abonado.vehiculo.matricula == matricula and abonado.plaza_parking == plaza_parking and abonado.pin == pin:
+                                f_estado_plazas[plaza_parking] = "Reservada libre"
+                                f_lista_clientes.remove(abonado)
+                                print("Muchas gracias " + abonado.nombre + ", vehículo retirado con éxito")
+                                existe = True
+                                print("Gracias " + abonado.nombre + ", su vehículo ha sido retirado con éxito")
 
-        existe = False
-        for abonado in f_lista_clientes:
-            if abonado.vehiculo.matricula == matricula and abonado.plaza_parking == plaza_parking and abonado.pin == pin:
-                f_estado_plazas[plaza_parking] = "Reservada libre"
-                f_lista_clientes.remove(abonado)
-                print("Muchas gracias " + abonado.nombre + ", vehículo retirado con éxito")
-                existe = True
-                print("Gracias " + abonado.nombre + ", su vehículo ha sido retirado con éxito")
-
-        if not existe:
-            print("No se ha encontrado ningún vehículo con los datos introducidos")
+                        if not existe:
+                            print("No se ha encontrado ningún vehículo con los datos introducidos")
+                except ValueError:
+                    print("Error. Indroduzca un pin válido, de 6 dígitos")
+        except ValueError:
+            print("Error. No existe la plaza "+plaza_parking)

@@ -4,7 +4,7 @@ import pickle
 
 class AdministradorService:
     def mostrar_estado_parking(self, f_estado_plazas):
-        for i in range(1, 61):
+        for i in range(1, len(f_estado_plazas)+1):
             if f_estado_plazas[i] == 'Libre':
                 print('Plaza ' + str(i) + ': Libre ✅   ', end='')
             elif f_estado_plazas[i] == 'Ocupada':
@@ -27,27 +27,42 @@ class AdministradorService:
         dia1 = int(input("Día: "))
         hora1 = int(input("Hora: "))
         minuto1 = int(input("Minuto: "))
+        try:
+            if 1 > mes1 > 12 or 1 > dia1 > 31 or 0 > hora1 > 24 or 0 > minuto1 > 60:
+                raise ValueError
+            else:
+                print("Fecha final de la recaudación")
+                anho2 = int(input("Año: "))
+                mes2 = int(input("Mes: "))
+                dia2 = int(input("Día: "))
+                hora2 = int(input("Hora: "))
+                minuto2 = int(input("Minuto: "))
+                try:
+                    if 1 > mes1 > 12 or 1 > dia1 > 31 or 0 > hora1 > 24 or 0 > minuto1 > 60:
+                        raise ValueError
+                    else:
+                        fecha_inicio = datetime.datetime(anho1, mes1, dia1, hora1, minuto1)
+                        fecha_fin = datetime.datetime(anho2, mes2, dia2, hora2, minuto2)
 
-        print("Fecha final de la recaudación")
-        anho2 = int(input("Año: "))
-        mes2 = int(input("Mes: "))
-        dia2 = int(input("Día: "))
-        hora2 = int(input("Hora: "))
-        minuto2 = int(input("Minuto: "))
-
-        fecha_inicio = datetime.datetime(anho1, mes1, dia1, hora1, minuto1)
-        fecha_fin = datetime.datetime(anho2, mes2, dia2, hora2, minuto2)
-
-        for fecha, cobro in f_recaudacion.items():
-            if fecha_inicio < fecha < fecha_fin:
-                sum += cobro
-                cant += 1
-                print("Fecha: {}/{}/{}".format(fecha.day, fecha.month, fecha.year),
-                      "- {}:{}:{}".format(fecha.hour, fecha.minute, fecha.second))
-                print("Recaudacion: ", str(cobro))
-                print("========================")
-        print("La recaudación total entre " + str(fecha_inicio) + " y " + str(fecha_fin) + " ha sido de " + str(
-            sum) + " € con un total de " + str(cant) + " cobro/s")
+                        if fecha_inicio < fecha_fin:
+                            for fecha, cobro in f_recaudacion.items():
+                                if fecha_inicio < fecha < fecha_fin:
+                                    sum += cobro
+                                    cant += 1
+                                    print("Fecha: {}/{}/{}".format(fecha.day, fecha.month, fecha.year),
+                                          "- {}:{}:{}".format(fecha.hour, fecha.minute, fecha.second))
+                                    print("Recaudacion: ", str(cobro))
+                                    print("========================")
+                            print("La recaudación total entre " + str(fecha_inicio) + " y " + str(
+                                fecha_fin) + " ha sido de " + str(
+                                sum) + " € con un total de " + str(cant) + " cobro/s")
+                        else:
+                            print("Has introducido mal las fechas, primero introduce desde que quieres hacer la "
+                                  "comprobación")
+                except ValueError:
+                    print("Error. Has introducido mal la fecha")
+        except ValueError:
+            print("Error. Has introducido mal la fecha")
 
     def consultar_abonados(self, f_recaudacion_abonados, f_lista_abonados):
 

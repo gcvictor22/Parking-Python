@@ -20,14 +20,12 @@ recaudacion = pickle_service.cargar_recaudacion()
 parking = pickle_service.cargar_parking()
 
 
-# lista_abonados = main_service.lista_abonados
-# lista_clientes = main_service.lista_clientes
-# estado_plazas = main_service.estado_plazas
-# recaudacion_abonados = main_service.recaudacion_abonos
-# recaudacion = main_service.recaudacion
-# parking = main_service.parking
-
-
+#lista_abonados = main_service.lista_abonados
+#lista_clientes = main_service.lista_clientes
+#estado_plazas = main_service.estado_plazas
+#recaudacion_abonados = main_service.recaudacion_abonos
+#recaudacion = main_service.recaudacion
+#parking = main_service.parking
 def actualizado_automatico():
     on = True
     while on:
@@ -39,12 +37,6 @@ def actualizado_automatico():
             else:
                 i = 300
                 on = False
-        open("Ficheros/estado_plazas.pckl", "w").close()
-        open("Ficheros/listado_abonados.pckl", "w").close()
-        open("Ficheros/listado_clientes.pckl", "w").close()
-        open("Ficheros/parking.pckl", "w").close()
-        open("Ficheros/recaudacion_abonados.pckl", "w").close()
-        open("Ficheros/recaudacion.pckl", "w").close()
 
         pickle_service.actualizar_lista_abonados(lista_abonados)
         pickle_service.actualizar_lista_clientes(lista_clientes)
@@ -56,7 +48,7 @@ def actualizado_automatico():
 
 
 def main_de_verdad():
-    opcion = 9
+    opcion = int
     while opcion != 0:
 
         opcion = int(input("\n¿Donde quieres acceder?"
@@ -64,91 +56,113 @@ def main_de_verdad():
                            "\n1. Zona cliente"
                            "\n2. Zona administrador"
                            "\nOpcion: "))
-
-        if opcion == 0:
-            pickle_service.actualizar_lista_abonados(lista_abonados)
-            pickle_service.actualizar_lista_clientes(lista_clientes)
-            pickle_service.actualizar_estado_plazas(estado_plazas)
-            pickle_service.actualizar_recaudacion_abonados(recaudacion_abonados)
-            pickle_service.actualizar_recaudacion(recaudacion)
-            pickle_service.actualizar_parking(parking)
-            pass
-        if opcion == 1:
-            opcion_cliente = int(input("¿Qué deseas hacer?"
-                                       "\n0. Salir"
-                                       "\n1. Depositar vehículo"
-                                       "\n2. Retirar vehículo"
-                                       "\n3. Depositar vehículo (abonado)"
-                                       "\n4. Retirar vehículo (abonado)"
-                                       "\nOpcion: "))
-
-            if opcion_cliente == 0:
-                pass
-            elif opcion_cliente == 1:
-                parking_service.mostrar_plazas(parking=parking)
-                parking_service.depositar_vehiculo(parking=parking, f_estado_plazas=estado_plazas,
-                                                   f_lista_clientes=lista_clientes)
-            elif opcion_cliente == 2:
-                parking_service.retirar_vehiculo(parking=parking, f_lista_clientes=lista_clientes,
-                                                 f_estado_plazas=estado_plazas, f_recaudacion=recaudacion)
-            elif opcion_cliente == 3:
-                parking_service.mostrar_plazas(parking=parking)
-                parking_service.depositar_vehiculo_abonado(f_estado_plazas=estado_plazas,
-                                                           f_lista_clientes=lista_clientes,
-                                                           f_lista_abonados=lista_abonados)
-            elif opcion_cliente == 4:
-                parking_service.retirar_vehiculo_abonado(f_estado_plazas=estado_plazas, f_lista_clientes=lista_clientes)
+        try:
+            if opcion != 0 and opcion != 1 and opcion != 2:
+                raise ValueError
             else:
-                print("Opción incorrecta")
-
-        elif opcion == 2:
-            opcion_admin = int(input("¿Qué deseas hacer?"
-                                     "\n0. Salir"
-                                     "\n1. Ver estado del parking"
-                                     "\n2. Facturación"
-                                     "\n3. Consulta de abonados"
-                                     "\n4. Gestión abonados"
-                                     "\n5. Caducidad abonos"
-                                     "\nOpcion: "))
-
-            if opcion_admin == 0:
-                pass
-            elif opcion_admin == 1:
-                admin_service.mostrar_estado_parking(f_estado_plazas=estado_plazas)
-            elif opcion_admin == 2:
-                admin_service.calcular_recaudacion_entre_horas(f_recaudacion=recaudacion)
-            elif opcion_admin == 3:
-                admin_service.consultar_abonados(f_lista_abonados=lista_abonados,
-                                                 f_recaudacion_abonados=recaudacion_abonados)
-            elif opcion_admin == 4:
-
-                opcion_abono = int(input("¿Qué deseas hacer?"
-                                         "\n0. Salir"
-                                         "\n1. Darme de alta como abonado"
-                                         "\n2. Modificar información personal"
-                                         "\n3. Renovar abono"
-                                         "\n4. Darme de baja"
-                                         "\nOpcion: "))
-
-                if opcion_abono == 0:
+                if opcion == 0:
+                    pickle_service.actualizar_lista_abonados(lista_abonados)
+                    pickle_service.actualizar_lista_clientes(lista_clientes)
+                    pickle_service.actualizar_estado_plazas(estado_plazas)
+                    pickle_service.actualizar_recaudacion_abonados(recaudacion_abonados)
+                    pickle_service.actualizar_recaudacion(recaudacion)
+                    pickle_service.actualizar_parking(parking)
                     pass
-                elif opcion_abono == 1:
-                    abonados_service.crear_abonado(f_estado_plazas=estado_plazas, f_lista_abonados=lista_abonados,
-                                                   f_recaudacion_abonados=recaudacion_abonados, parking=parking)
-                elif opcion_abono == 2:
-                    abonados_service.modificar_informacion_personal_abonado(f_lista_abonados=lista_abonados)
-                elif opcion_abono == 3:
-                    abonados_service.modificar_abono(f_lista_abonados=lista_abonados,
-                                                     f_recaudacion_abonados=recaudacion_abonados)
-                elif opcion_abono == 4:
-                    abonados_service.baja_abonado(f_estado_plazas=estado_plazas, f_listado_abonados=lista_abonados)
-                else:
-                    print("Opción incorrecta")
+                if opcion == 1:
+                    opcion_cliente = int(input("¿Qué deseas hacer?"
+                                               "\n0. Salir"
+                                               "\n1. Depositar vehículo"
+                                               "\n2. Retirar vehículo"
+                                               "\n3. Depositar vehículo (abonado)"
+                                               "\n4. Retirar vehículo (abonado)"
+                                               "\nOpcion: "))
+                    try:
+                        if opcion_cliente != 0 and opcion_cliente != 1 and opcion_cliente != 2 and opcion_cliente != 3 and opcion_cliente != 4:
+                            raise ValueError
+                        else:
+                            if opcion_cliente == 0:
+                                pass
+                            elif opcion_cliente == 1:
+                                parking_service.mostrar_plazas(parking=parking)
+                                parking_service.depositar_vehiculo(parking=parking, f_estado_plazas=estado_plazas,
+                                                                   f_lista_clientes=lista_clientes)
+                            elif opcion_cliente == 2:
+                                parking_service.retirar_vehiculo(parking=parking, f_lista_clientes=lista_clientes,
+                                                                 f_estado_plazas=estado_plazas,
+                                                                 f_recaudacion=recaudacion)
+                            elif opcion_cliente == 3:
+                                parking_service.mostrar_plazas(parking=parking)
+                                parking_service.depositar_vehiculo_abonado(f_estado_plazas=estado_plazas,
+                                                                           f_lista_clientes=lista_clientes,
+                                                                           f_lista_abonados=lista_abonados)
+                            elif opcion_cliente == 4:
+                                parking_service.retirar_vehiculo_abonado(f_estado_plazas=estado_plazas,
+                                                                         f_lista_clientes=lista_clientes)
+                    except ValueError:
+                        print("Error, introduce 0, 1, 2, 3 o 4")
 
-            elif opcion_admin == 5:
-                abonados_service.caducidad_abonos(f_listado_abonados=lista_abonados)
-            else:
-                print("Opción incorrecta")
+                elif opcion == 2:
+                    opcion_admin = int(input("¿Qué deseas hacer?"
+                                             "\n0. Salir"
+                                             "\n1. Ver estado del parking"
+                                             "\n2. Facturación"
+                                             "\n3. Consulta de abonados"
+                                             "\n4. Gestión abonados"
+                                             "\n5. Caducidad abonos"
+                                             "\nOpcion: "))
+                    try:
+                        if opcion_admin != 0 and opcion_admin != 1 and opcion_admin != 2 and opcion_admin != 3 and opcion_admin != 4 and opcion_admin != 5:
+                            raise ValueError
+                        else:
+                            if opcion_admin == 0:
+                                pass
+                            elif opcion_admin == 1:
+                                admin_service.mostrar_estado_parking(f_estado_plazas=estado_plazas)
+                            elif opcion_admin == 2:
+                                admin_service.calcular_recaudacion_entre_horas(f_recaudacion=recaudacion)
+                            elif opcion_admin == 3:
+                                admin_service.consultar_abonados(f_lista_abonados=lista_abonados,
+                                                                 f_recaudacion_abonados=recaudacion_abonados)
+                            elif opcion_admin == 4:
+
+                                opcion_abono = int(input("¿Qué deseas hacer?"
+                                                         "\n0. Salir"
+                                                         "\n1. Darme de alta como abonado"
+                                                         "\n2. Modificar información personal"
+                                                         "\n3. Renovar abono"
+                                                         "\n4. Darme de baja"
+                                                         "\nOpcion: "))
+                                try:
+                                    if opcion_abono !=0 and opcion_abono !=1 and opcion_abono !=2 and opcion_abono !=3 and opcion_abono !=4:
+                                        raise ValueError
+                                    else:
+                                        if opcion_abono == 0:
+                                            pass
+                                        elif opcion_abono == 1:
+                                            abonados_service.crear_abonado(f_estado_plazas=estado_plazas,
+                                                                           f_lista_abonados=lista_abonados,
+                                                                           f_recaudacion_abonados=recaudacion_abonados,
+                                                                           parking=parking)
+                                        elif opcion_abono == 2:
+                                            abonados_service.modificar_informacion_personal_abonado(
+                                                f_lista_abonados=lista_abonados)
+                                        elif opcion_abono == 3:
+                                            abonados_service.modificar_abono(f_lista_abonados=lista_abonados,
+                                                                             f_recaudacion_abonados=recaudacion_abonados)
+                                        elif opcion_abono == 4:
+                                            abonados_service.baja_abonado(f_estado_plazas=estado_plazas,
+                                                                          f_listado_abonados=lista_abonados)
+                                        else:
+                                            print("Opción incorrecta")
+                                except ValueError:
+                                    print("Error, introduce 0, 1, 2, 3 o 4")
+
+                            elif opcion_admin == 5:
+                                abonados_service.caducidad_abonos(f_listado_abonados=lista_abonados)
+                    except ValueError:
+                        print("Error, introduce 0, 1, 2, 3, 4 o 5")
+        except ValueError:
+            print("Error, introduce 0, 1 o 2")
 
 
 main_thread = Thread(target=main_de_verdad)
