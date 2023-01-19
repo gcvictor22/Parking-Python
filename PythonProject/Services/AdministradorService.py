@@ -22,22 +22,22 @@ class AdministradorService:
         cant = 0
 
         print("Fecha de inicio de la recaudación")
-        anho1 = int(input("Año: "))
-        mes1 = int(input("Mes: "))
-        dia1 = int(input("Día: "))
-        hora1 = int(input("Hora: "))
-        minuto1 = int(input("Minuto: "))
         try:
+            anho1 = int(input("Año: "))
+            mes1 = int(input("Mes: "))
+            dia1 = int(input("Día: "))
+            hora1 = int(input("Hora: "))
+            minuto1 = int(input("Minuto: "))
             if 1 > mes1 > 12 or 1 > dia1 > 31 or 0 > hora1 > 24 or 0 > minuto1 > 60:
                 raise ValueError
             else:
                 print("Fecha final de la recaudación")
-                anho2 = int(input("Año: "))
-                mes2 = int(input("Mes: "))
-                dia2 = int(input("Día: "))
-                hora2 = int(input("Hora: "))
-                minuto2 = int(input("Minuto: "))
                 try:
+                    anho2 = int(input("Año: "))
+                    mes2 = int(input("Mes: "))
+                    dia2 = int(input("Día: "))
+                    hora2 = int(input("Hora: "))
+                    minuto2 = int(input("Minuto: "))
                     if 1 > mes1 > 12 or 1 > dia1 > 31 or 0 > hora1 > 24 or 0 > minuto1 > 60:
                         raise ValueError
                     else:

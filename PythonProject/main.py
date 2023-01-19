@@ -50,13 +50,12 @@ def actualizado_automatico():
 def main_de_verdad():
     opcion = int
     while opcion != 0:
-
-        opcion = int(input("\n¿Donde quieres acceder?"
-                           "\n0. Salir"
-                           "\n1. Zona cliente"
-                           "\n2. Zona administrador"
-                           "\nOpcion: "))
         try:
+            opcion = int(input("\n¿Donde quieres acceder?"
+                               "\n0. Salir"
+                               "\n1. Zona cliente"
+                               "\n2. Zona administrador"
+                               "\nOpcion: "))
             if opcion != 0 and opcion != 1 and opcion != 2:
                 raise ValueError
             else:
@@ -69,14 +68,14 @@ def main_de_verdad():
                     pickle_service.actualizar_parking(parking)
                     pass
                 if opcion == 1:
-                    opcion_cliente = int(input("¿Qué deseas hacer?"
-                                               "\n0. Salir"
-                                               "\n1. Depositar vehículo"
-                                               "\n2. Retirar vehículo"
-                                               "\n3. Depositar vehículo (abonado)"
-                                               "\n4. Retirar vehículo (abonado)"
-                                               "\nOpcion: "))
                     try:
+                        opcion_cliente = int(input("¿Qué deseas hacer?"
+                                                   "\n0. Salir"
+                                                   "\n1. Depositar vehículo"
+                                                   "\n2. Retirar vehículo"
+                                                   "\n3. Depositar vehículo (abonado)"
+                                                   "\n4. Retirar vehículo (abonado)"
+                                                   "\nOpcion: "))
                         if opcion_cliente != 0 and opcion_cliente != 1 and opcion_cliente != 2 and opcion_cliente != 3 and opcion_cliente != 4:
                             raise ValueError
                         else:
@@ -102,15 +101,15 @@ def main_de_verdad():
                         print("Error, introduce 0, 1, 2, 3 o 4")
 
                 elif opcion == 2:
-                    opcion_admin = int(input("¿Qué deseas hacer?"
-                                             "\n0. Salir"
-                                             "\n1. Ver estado del parking"
-                                             "\n2. Facturación"
-                                             "\n3. Consulta de abonados"
-                                             "\n4. Gestión abonados"
-                                             "\n5. Caducidad abonos"
-                                             "\nOpcion: "))
                     try:
+                        opcion_admin = int(input("¿Qué deseas hacer?"
+                                                 "\n0. Salir"
+                                                 "\n1. Ver estado del parking"
+                                                 "\n2. Facturación"
+                                                 "\n3. Consulta de abonados"
+                                                 "\n4. Gestión abonados"
+                                                 "\n5. Caducidad abonos"
+                                                 "\nOpcion: "))
                         if opcion_admin != 0 and opcion_admin != 1 and opcion_admin != 2 and opcion_admin != 3 and opcion_admin != 4 and opcion_admin != 5:
                             raise ValueError
                         else:
@@ -125,14 +124,14 @@ def main_de_verdad():
                                                                  f_recaudacion_abonados=recaudacion_abonados)
                             elif opcion_admin == 4:
 
-                                opcion_abono = int(input("¿Qué deseas hacer?"
-                                                         "\n0. Salir"
-                                                         "\n1. Darme de alta como abonado"
-                                                         "\n2. Modificar información personal"
-                                                         "\n3. Renovar abono"
-                                                         "\n4. Darme de baja"
-                                                         "\nOpcion: "))
                                 try:
+                                    opcion_abono = int(input("¿Qué deseas hacer?"
+                                                             "\n0. Salir"
+                                                             "\n1. Darme de alta como abonado"
+                                                             "\n2. Modificar información personal"
+                                                             "\n3. Renovar abono"
+                                                             "\n4. Darme de baja"
+                                                             "\nOpcion: "))
                                     if opcion_abono !=0 and opcion_abono !=1 and opcion_abono !=2 and opcion_abono !=3 and opcion_abono !=4:
                                         raise ValueError
                                     else:

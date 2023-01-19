@@ -30,8 +30,8 @@ class ParkingService:
                       '\n2. Moto'
                       '\n3. Movilidad reducidad')
 
-                tipo = int(input('Opcion: '))
                 try:
+                    tipo = int(input('Opcion: '))
                     if tipo != 1 and tipo != 2 and tipo != 3:
                         raise ValueError
                     else:
@@ -99,16 +99,17 @@ class ParkingService:
     def retirar_vehiculo(self, parking, f_lista_clientes, f_estado_plazas, f_recaudacion):
 
         matricula = input("Introduzca la matrícula de su vehículo: ")
-        plaza_parking = int(input("Introduzca la plaza de garaje: "))
         try:
+            plaza_parking = int(input("Introduzca la plaza de garaje: "))
             if 1 > plaza_parking > 60:
                 raise ValueError
             else:
-                pin = int(input("Por último, introduzca el pin que aparece en su ticket de depósito: "))
                 try:
+                    pin = int(input("Por último, introduzca el pin que aparece en su ticket de depósito: "))
                     if 100000 > pin > 999999:
                         raise ValueError
                     else:
+                        retirado = False
                         for cliente in f_lista_clientes:
                             if cliente.vehiculo.matricula.upper() == matricula.upper() and cliente.plaza_parking == plaza_parking and cliente.pin == pin:
                                 f_estado_plazas[plaza_parking] = "Libre"
@@ -126,6 +127,9 @@ class ParkingService:
                                 f_recaudacion[datetime.datetime.now()] = val * tiempo_estacionado
                                 f_lista_clientes.remove(cliente)
                                 print("\nVehículo retirado con éxito\n")
+                                retirado = True
+                        if not retirado:
+                            print("No se ha podido asociar los datos introducidos a un vehículo")
                 except ValueError:
                     print("Error. Indroduzca un pin válido, de 6 dígitos")
         except ValueError:
@@ -134,13 +138,13 @@ class ParkingService:
     def retirar_vehiculo_abonado(self, f_lista_clientes, f_estado_plazas):
 
         matricula = input("Introduzca la matrícula de su vehículo: ")
-        plaza_parking = int(input("Introduzca la plaza de garaje: "))
         try:
+            plaza_parking = int(input("Introduzca la plaza de garaje: "))
             if 1 > plaza_parking > 60:
                 raise ValueError
             else:
-                pin = int(input("Por último, introduzca el pin que aparece en su ticket de depósito: "))
                 try:
+                    pin = int(input("Por último, introduzca el pin que aparece en su ticket de depósito: "))
                     if 100000 > pin > 999999:
                         raise ValueError
                     else:
