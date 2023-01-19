@@ -1,7 +1,7 @@
 class ViewPrint:
     def opciones_zonas(self):
         return "\n¿Donde quieres acceder?" \
-               "\n0. Salir" \
+               "\n0. Guardar y salir" \
                "\n1. Zona cliente" \
                "\n2. Zona administrador" \
                "\nOpción: "

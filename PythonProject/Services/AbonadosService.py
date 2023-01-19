@@ -39,108 +39,118 @@ class AbonadosService:
                         gmail = input("Gmail: ")
                         try:
                             dni = input("DNI: ")
-                            if len(dni) != 10 or 65 <= ord(dni[8]) <= 90 or 97 <= ord(dni[8]) <= 122:
+                            if len(dni) != 9 or 65 > ord(dni[8]) > 90 or 97 > ord(dni[8]) > 122:
                                 raise ValueError
                             else:
-                                try:
-                                    tarjeta = int(input("Tarjeta de pago: "))
-                                    if len(tarjeta) != 16:
-                                        raise ValueError
-                                    else:
-                                        print("Abono\n"
-                                              "-----")
-                                        try:
-                                            tipo_a = int(input(views.elegir_abono()))
-                                            if tipo_a != 1 and tipo_a != tipo_a != 2 and tipo_a != 3 and tipo_a != 4:
-                                                raise ValueError
-                                            else:
-                                                if tipo_a == 1:
-                                                    tipo_abono = "mensual"
-                                                    fecha_caducidad_abono = datetime.now() + timedelta(days=30)
-                                                    f_recaudacion_abonados[tarjeta] = 25
-                                                elif tipo_a == 2:
-                                                    tipo_abono = "trimestral"
-                                                    fecha_caducidad_abono = datetime.now() + timedelta(days=90)
-                                                    f_recaudacion_abonados[tarjeta] = 70
-                                                elif tipo_a == 3:
-                                                    tipo_abono = "semestral"
-                                                    fecha_caducidad_abono = datetime.now() + timedelta(days=183)
-                                                    f_recaudacion_abonados[tarjeta] = 130
+                                it = 0
+                                existe = False
+                                while not existe and it < len(f_lista_abonados):
+                                    if f_lista_abonados[it].dni == dni:
+                                        existe = True
+                                    it += 1
+
+                                if not existe:
+                                    try:
+                                        tarjeta = int(input("Tarjeta de pago: "))
+                                        if len(tarjeta) != 16:
+                                            raise ValueError
+                                        else:
+                                            print("Abono\n"
+                                                  "-----")
+                                            try:
+                                                tipo_a = int(input(views.elegir_abono()))
+                                                if tipo_a != 1 and tipo_a != tipo_a != 2 and tipo_a != 3 and tipo_a != 4:
+                                                    raise ValueError
                                                 else:
-                                                    tipo_abono = "anual"
-                                                    fecha_caducidad_abono = datetime.now() + timedelta(days=365)
-                                                    f_recaudacion_abonados[tarjeta] = 200
+                                                    if tipo_a == 1:
+                                                        tipo_abono = "mensual"
+                                                        fecha_caducidad_abono = datetime.now() + timedelta(days=30)
+                                                        f_recaudacion_abonados[tarjeta] = 25
+                                                    elif tipo_a == 2:
+                                                        tipo_abono = "trimestral"
+                                                        fecha_caducidad_abono = datetime.now() + timedelta(days=90)
+                                                        f_recaudacion_abonados[tarjeta] = 70
+                                                    elif tipo_a == 3:
+                                                        tipo_abono = "semestral"
+                                                        fecha_caducidad_abono = datetime.now() + timedelta(days=183)
+                                                        f_recaudacion_abonados[tarjeta] = 130
+                                                    else:
+                                                        tipo_abono = "anual"
+                                                        fecha_caducidad_abono = datetime.now() + timedelta(days=365)
+                                                        f_recaudacion_abonados[tarjeta] = 200
 
-                                                print("Vehiculo\n"
-                                                      "--------")
-                                                matricula = input(views.elegir_tipo_vehiculo())
-                                                existe = False
-                                                it = 0
-                                                while not existe or it < len(f_lista_abonados):
-                                                    if f_lista_abonados[it].vehiculo.matricula == matricula:
-                                                        existe = True
-                                                    it += 1
+                                                    print("Vehiculo\n"
+                                                          "--------")
+                                                    matricula = input(views.elegir_tipo_vehiculo())
+                                                    existe = False
+                                                    it = 0
+                                                    while not existe or it < len(f_lista_abonados):
+                                                        if f_lista_abonados[it].vehiculo.matricula == matricula:
+                                                            existe = True
+                                                        it += 1
 
-                                                it = 0
-                                                while not existe or it < len(f_lista_abonados):
-                                                    if f_lista_abonados[it].vehiculo.matricula == matricula:
-                                                        existe = True
-                                                    it += 1
+                                                    it = 0
+                                                    while not existe or it < len(f_lista_abonados):
+                                                        if f_lista_abonados[it].vehiculo.matricula == matricula:
+                                                            existe = True
+                                                        it += 1
 
-                                                if not existe:
-                                                    try:
-                                                        tipo_v = int(input('\nOpcion: '))
-                                                        if tipo_v != 1 and tipo_v != tipo_v != 2 and tipo_v != 3:
-                                                            raise ValueError
-                                                        else:
-                                                            if tipo_v == 1 and parking.plazas_turismo > 0:
-                                                                nuevo_vehiculo = Vehiculo(matricula, 'Turismo')
-                                                                parking.plazas_turismo -= 1
-                                                                self.crear_abonado_comprobar_plazas(parking,
-                                                                                                    f_estado_plazas,
-                                                                                                    nombre, apellidos,
-                                                                                                    gmail,
-                                                                                                    dni, tarjeta,
-                                                                                                    tipo_abono,
-                                                                                                    nuevo_vehiculo,
-                                                                                                    plaza_parking,
-                                                                                                    fecha_caducidad_abono,
-                                                                                                    f_lista_abonados)
-                                                            elif tipo_v == 2 and parking.plazas_motos > 0:
-                                                                nuevo_vehiculo = Vehiculo(matricula, 'Moto')
-                                                                parking.plazas_motos -= 1
-                                                                self.crear_abonado_comprobar_plazas(parking,
-                                                                                                    f_estado_plazas,
-                                                                                                    nombre, apellidos,
-                                                                                                    gmail,
-                                                                                                    dni, tarjeta,
-                                                                                                    tipo_abono,
-                                                                                                    nuevo_vehiculo,
-                                                                                                    plaza_parking,
-                                                                                                    fecha_caducidad_abono,
-                                                                                                    f_lista_abonados)
-                                                            elif tipo_v == 3 and parking.plazas_minusvalidos > 0:
-                                                                nuevo_vehiculo = Vehiculo(matricula,
-                                                                                          'Movilidad reducida')
-                                                                parking.plazas_minusvalidos -= 1
-                                                                self.crear_abonado_comprobar_plazas(parking,
-                                                                                                    f_estado_plazas,
-                                                                                                    nombre, apellidos,
-                                                                                                    gmail,
-                                                                                                    dni, tarjeta,
-                                                                                                    tipo_abono,
-                                                                                                    nuevo_vehiculo,
-                                                                                                    plaza_parking,
-                                                                                                    fecha_caducidad_abono,
-                                                                                                    f_lista_abonados)
-                                                    except ValueError:
-                                                        print("⚠️ Error. introduce 1, 2 o 3 ⚠️")
-                                                else:
-                                                    print("Ya existe un registro de un vehículo con la misma matrícula")
-                                        except ValueError:
-                                            print("⚠️ Error. introduce 1, 2, 3 o 4 ⚠️")
-                                except ValueError:
-                                    print("⚠️ Error. La tarjeta de crédito debe tener 16 dígitos ⚠️")
+                                                    if not existe:
+                                                        try:
+                                                            tipo_v = int(input('\nOpcion: '))
+                                                            if tipo_v != 1 and tipo_v != tipo_v != 2 and tipo_v != 3:
+                                                                raise ValueError
+                                                            else:
+                                                                if tipo_v == 1 and parking.plazas_turismo > 0:
+                                                                    nuevo_vehiculo = Vehiculo(matricula, 'Turismo')
+                                                                    parking.plazas_turismo -= 1
+                                                                    self.crear_abonado_comprobar_plazas(parking,
+                                                                                                        f_estado_plazas,
+                                                                                                        nombre, apellidos,
+                                                                                                        gmail,
+                                                                                                        dni, tarjeta,
+                                                                                                        tipo_abono,
+                                                                                                        nuevo_vehiculo,
+                                                                                                        plaza_parking,
+                                                                                                        fecha_caducidad_abono,
+                                                                                                        f_lista_abonados)
+                                                                elif tipo_v == 2 and parking.plazas_motos > 0:
+                                                                    nuevo_vehiculo = Vehiculo(matricula, 'Moto')
+                                                                    parking.plazas_motos -= 1
+                                                                    self.crear_abonado_comprobar_plazas(parking,
+                                                                                                        f_estado_plazas,
+                                                                                                        nombre, apellidos,
+                                                                                                        gmail,
+                                                                                                        dni, tarjeta,
+                                                                                                        tipo_abono,
+                                                                                                        nuevo_vehiculo,
+                                                                                                        plaza_parking,
+                                                                                                        fecha_caducidad_abono,
+                                                                                                        f_lista_abonados)
+                                                                elif tipo_v == 3 and parking.plazas_minusvalidos > 0:
+                                                                    nuevo_vehiculo = Vehiculo(matricula,
+                                                                                              'Movilidad reducida')
+                                                                    parking.plazas_minusvalidos -= 1
+                                                                    self.crear_abonado_comprobar_plazas(parking,
+                                                                                                        f_estado_plazas,
+                                                                                                        nombre, apellidos,
+                                                                                                        gmail,
+                                                                                                        dni, tarjeta,
+                                                                                                        tipo_abono,
+                                                                                                        nuevo_vehiculo,
+                                                                                                        plaza_parking,
+                                                                                                        fecha_caducidad_abono,
+                                                                                                        f_lista_abonados)
+                                                        except ValueError:
+                                                            print("⚠️ Error. introduce 1, 2 o 3 ⚠️")
+                                                    else:
+                                                        print("Ya existe un registro de un vehículo con la misma matrícula")
+                                            except ValueError:
+                                                print("⚠️ Error. introduce 1, 2, 3 o 4 ⚠️")
+                                    except ValueError:
+                                        print("⚠️ Error. La tarjeta de crédito debe tener 16 dígitos ⚠️")
+                                else:
+                                    print("Ya existe un cliente registrado con el dni introducido")
                         except ValueError:
                             print("⚠️ Error. Formato de DNI incorrecto, debe de ser XXXXXXXXY (X -> numero, "
                                   "Y -> letra) ⚠️")
@@ -308,15 +318,16 @@ class AbonadosService:
             if datetime.now() > abonado.fecha_caducidad_abono + timedelta(days=15):
                 if f_estado_plazas[abonado.plaza_parking] == "Reservada libre":
                     print(
-                        "\nEl abono del cliente con Gmail: " + abonado.gmail + " ha caducado hace más de 15 días y se "
+                        "\nEl abono del cliente con Gmail: " + abonado.gmail + " ha caducado hace más de 15 días\ny se "
                                                                                "ha "
                                                                                "procedido a darle de baja")
                 else:
                     print(
-                        "\nEl abono del cliente con Gmail: " + abonado.gmail + " ha caducado hace más de 15 días y se "
+                        "\nEl abono del cliente con Gmail: " + abonado.gmail + " ha caducado hace más de 15 días\ny se "
                                                                                "ha "
-                                                                               "procedido a darle de baja y retirar su "
-                                                                               "vehículo. Se le enviará al correo "
+                                                                               "procedido a darle de baja. La grúa ha "
+                                                                               "retirado su "
+                                                                               "vehículo y se le enviarán al correo "
                                                                                "indicaciones para poder recogerlo")
                 f_estado_plazas[abonado.plaza_parking] = "Libre"
                 f_lista_abonados.remove(abonado)

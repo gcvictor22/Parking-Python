@@ -1,6 +1,3 @@
-from datetime import datetime
-from datetime import timedelta
-
 from Services.MainService import MainService
 from Services.ParkingService import ParkingService
 from Services.AbonadosService import AbonadosService
@@ -128,7 +125,7 @@ def main_de_verdad():
                                             abonados_service.crear_abonado(f_estado_plazas=estado_plazas,
                                                                            f_lista_abonados=lista_abonados,
                                                                            f_recaudacion_abonados=recaudacion_abonados,
-                                                                           parking=parking)
+                                                                           parking=parking, f_lista_clientes=lista_clientes)
                                         elif opcion_abono == 2:
                                             abonados_service.modificar_informacion_personal_abonado(
                                                 f_lista_abonados=lista_abonados)
