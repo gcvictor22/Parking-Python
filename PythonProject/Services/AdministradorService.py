@@ -57,7 +57,7 @@ class AdministradorService:
                                     print("========================")
                             print("La recaudación total entre " + str(fecha_inicio) + " y " + str(
                                 fecha_fin) + " ha sido de " + str(
-                                sum) + " € con un total de " + str(cant) + " cobro/s")
+                                round(sum, 2)) + "€ con un total de " + str(cant) + " cobro/s")
                         else:
                             print("Has introducido mal las fechas, primero introduce desde que quieres hacer la "
                                   "comprobación")
