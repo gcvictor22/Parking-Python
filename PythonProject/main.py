@@ -22,6 +22,8 @@ recaudacion = pickle_service.cargar_recaudacion()
 parking = pickle_service.cargar_parking()
 
 
+# Utilizo el siguiente código comentado para resetear los valores de fábrica
+
 # lista_abonados = main_service.lista_abonados
 # lista_clientes = main_service.lista_clientes
 # estado_plazas = main_service.estado_plazas
@@ -125,7 +127,8 @@ def main_de_verdad():
                                             abonados_service.crear_abonado(f_estado_plazas=estado_plazas,
                                                                            f_lista_abonados=lista_abonados,
                                                                            f_recaudacion_abonados=recaudacion_abonados,
-                                                                           parking=parking, f_lista_clientes=lista_clientes)
+                                                                           parking=parking,
+                                                                           f_lista_clientes=lista_clientes)
                                         elif opcion_abono == 2:
                                             abonados_service.modificar_informacion_personal_abonado(
                                                 f_lista_abonados=lista_abonados)

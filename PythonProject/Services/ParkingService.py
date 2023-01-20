@@ -89,7 +89,7 @@ class ParkingService:
         cliente = Cliente(plaza_asignada, nuevo_vehiculo, datetime.datetime.now(), pin)
         f_lista_clientes.append(cliente)
         ticket = Ticket(matricula, datetime.datetime.now(), plaza_asignada, pin)
-        ticket.__str__()
+        print(ticket.__str__())
 
     def depositar_vehiculo_abonado(self, f_lista_abonados, f_estado_plazas, f_lista_clientes):
 

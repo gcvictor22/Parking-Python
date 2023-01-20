@@ -12,13 +12,8 @@ class Ticket:
 
     def __str__(self):
         fe = self.__fecha_deposito
-        print('--------------------------------------------------------\n'
-              '|   Fecha de depósito: {}/{}/{}'.format(fe.day, fe.month, fe.year),'                      |\n'
-              '|   Hora de depósto: {}:{}:{}'.format(fe.hour, fe.minute, fe.second), '                         |\n'
-              '|   Matricula del vehiculo: '+str(self.__matricula)+'                   |\n'
-              '|   Plaza de parking: %02d' % self.__identificador+'                               |\n'
-              '|   Pin para retirar vehiculo: '+str(self.__pin)+'                  |\n'
-              '|______________________________________________________|')
+
+        return f"|{self.__pin:^30}|"
 
 
     @property
