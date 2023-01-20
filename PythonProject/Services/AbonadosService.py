@@ -288,7 +288,7 @@ class AbonadosService:
                     try:
                         anho = int(input("Introduce un año: "))
                         mes = int(input("Introduce un mes: "))
-                        if 0 >= mes >= 12:
+                        if mes < 0 or mes > 12:
                             raise ValueError
                         else:
                             mes_comprobar = datetime(year=anho, month=mes, day=1)

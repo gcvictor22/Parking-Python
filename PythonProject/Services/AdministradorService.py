@@ -1,5 +1,4 @@
 import datetime
-import pickle
 
 
 class AdministradorService:
@@ -29,7 +28,7 @@ class AdministradorService:
             dia1 = int(input("Día: "))
             hora1 = int(input("Hora: "))
             minuto1 = int(input("Minuto: "))
-            if 1 > mes1 > 12 or 1 > dia1 > 31 or 0 > hora1 > 24 or 0 > minuto1 > 60:
+            if 1 > mes1 or mes1 > 12 or 1 > dia1 or dia1 > 31 or 0 > hora1 or hora1 > 24 or 0 > minuto1 or minuto1 > 60:
                 raise ValueError
             else:
                 print("Fecha final de la recaudación"
@@ -40,7 +39,7 @@ class AdministradorService:
                     dia2 = int(input("Día: "))
                     hora2 = int(input("Hora: "))
                     minuto2 = int(input("Minuto: "))
-                    if 1 > mes1 > 12 or 1 > dia1 > 31 or 0 > hora1 > 24 or 0 > minuto1 > 60:
+                    if 1 > mes1 or mes1 > 12 or 1 > dia1 or dia1 > 31 or 0 > hora1 or hora1 > 24 or 0 > minuto1 or minuto1 > 60:
                         raise ValueError
                     else:
                         fecha_inicio = datetime.datetime(anho1, mes1, dia1, hora1, minuto1)
@@ -68,13 +67,13 @@ class AdministradorService:
 
     def consultar_abonados(self, f_recaudacion_abonados, f_lista_abonados):
 
-        sum = 0.0
+        suma = 0.0
 
         for k, v in f_recaudacion_abonados.items():
-            sum += v
+            suma += v
 
         for a in f_lista_abonados:
             print(a.__str__())
             print("==========================================================================")
 
-        print("\n Se han recaudado un total de " + str(sum) + "€")
+        print("\n Se han recaudado un total de " + str(suma) + "€")
