@@ -11,10 +11,15 @@ class Ticket:
         self.__pin = pin
 
     def __str__(self):
-        fe = self.__fecha_deposito
+        f = self.__fecha_deposito
 
-        return f"|{self.__pin:^30}|"
-
+        return f" ________________________\n"\
+            f"|  {'Fecha: ':<10}{'{}-{}-{}'.format(f.day, f.month, f.year):>10}  |\n" \
+            f"|  {'Hora: ':<10}{'{}:{}:{}'.format(f.hour, f.minute, f.second):>10}  |\n" \
+            f"|  {'-----------':^20}  |\n"\
+            f"|  {'Plaza: ':<10}{'%02d' % self.__identificador:>10}  |\n"\
+            f"|  {'Pin: ':<10}{self.__pin:>10}  |\n"\
+            f"|________________________|"\
 
     @property
     def matricula(self):

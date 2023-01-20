@@ -24,12 +24,12 @@ parking = pickle_service.cargar_parking()
 
 # Utilizo el siguiente código comentado para resetear los valores de fábrica
 
-# lista_abonados = main_service.lista_abonados
-# lista_clientes = main_service.lista_clientes
-# estado_plazas = main_service.estado_plazas
-# recaudacion_abonados = main_service.recaudacion_abonos
-# recaudacion = main_service.recaudacion
-# parking = main_service.parking
+#lista_abonados = main_service.lista_abonados
+#lista_clientes = main_service.lista_clientes
+#estado_plazas = main_service.estado_plazas
+#recaudacion_abonados = main_service.recaudacion_abonos
+#recaudacion = main_service.recaudacion
+#parking = main_service.parking
 
 
 def actualizado_automatico():

@@ -106,7 +106,7 @@ class ParkingService:
                     ticket = Ticket(f_lista_abonados[it].vehiculo.matricula, datetime.datetime.now(),
                                     f_lista_abonados[it].plaza_parking,
                                     f_lista_abonados[it].pin)
-                    ticket.__str__()
+                    print(ticket.__str__())
                 else:
                     print("Tu abono ha caducado")
                     pass
