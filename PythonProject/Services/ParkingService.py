@@ -57,10 +57,20 @@ class ParkingService:
                                                             f_lista_clientes=f_lista_clientes,
                                                             nuevo_vehiculo=nuevo_vehiculo,
                                                             matricula=matricula)
+                        else:
+                            if tipo == 1:
+                                print("Lo sentimos, actualmente no hay hueco para turismos en nuestro parking")
+                            if tipo == 2:
+                                print("Lo sentimos, actualmente no hay hueco para motos en nuestro parking")
+                            if tipo == 3:
+                                print("Lo sentimos, actualmente no hay hueco para vehiculos con movilidad reducida en "
+                                      "nuestro parking")
                 except ValueError:
-                    print("⚠️ Error. introduce 1, 2, 3 o 4 ⚠️")
+                    print("⚠️ Error. introduce 1, 2 o 3 ⚠️")
             else:
                 print("Ya hay un vehiculo que tiene la matrícula introducida")
+        else:
+            print("Lo sentimos, actualmente no hay hueco en el parking")
 
     def comprobar_plazas_depositar(self, parking, f_estado_plazas, f_lista_clientes, nuevo_vehiculo, matricula):
         parking.plazas_totales -= 1
@@ -137,7 +147,7 @@ class ParkingService:
                                     divmod((datetime.datetime.now() - cliente.fecha_deposito).total_seconds(), 60)[0]
                                 f_recaudacion[datetime.datetime.now()] = val * tiempo_estacionado
                                 f_lista_clientes.remove(cliente)
-                                print("\nVehículo retirado con éxito\n")
+                                print("\nVehículo retirado con éxito. A pagar: "+str(val*tiempo_estacionado)+"€\n")
                                 retirado = True
                         if not retirado:
                             print("No se ha podido asociar los datos introducidos a un vehículo")

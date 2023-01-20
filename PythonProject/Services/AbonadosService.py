@@ -144,7 +144,8 @@ class AbonadosService:
                                                         except ValueError:
                                                             print("⚠️ Error. introduce 1, 2 o 3 ⚠️")
                                                     else:
-                                                        print("Ya existe un registro de un vehículo con la misma matrícula")
+                                                        print("Ya existe un registro de un vehículo con la misma "
+                                                              "matrícula")
                                             except ValueError:
                                                 print("⚠️ Error. introduce 1, 2, 3 o 4 ⚠️")
                                     except ValueError:
@@ -179,6 +180,8 @@ class AbonadosService:
                                 fecha_deposito='', pin=pin)
 
         f_lista_abonados.append(nuevo_abonado)
+        print("Gracias por confiar en nuestro parking, a partir de ahora tu pin para retirar el vehiculo\n"
+              "cada vez que quieras depositarlo será: "+pin)
 
     def modificar_informacion_personal_abonado(self, f_lista_abonados):
 
