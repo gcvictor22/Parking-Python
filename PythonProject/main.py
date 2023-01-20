@@ -14,20 +14,20 @@ main_service = MainService()
 pickle_service = PickleService()
 views = ViewPrint()
 
-# lista_abonados = pickle_service.cargar_lista_abonados()
-# lista_clientes = pickle_service.cargar_lista_clientes()
-# estado_plazas = pickle_service.cargar_estado_plazas()
-# recaudacion_abonados = pickle_service.cargar_recaudacion_abonados()
-# recaudacion = pickle_service.cargar_recaudacion()
-# parking = pickle_service.cargar_parking()
+lista_abonados = pickle_service.cargar_lista_abonados()
+lista_clientes = pickle_service.cargar_lista_clientes()
+estado_plazas = pickle_service.cargar_estado_plazas()
+recaudacion_abonados = pickle_service.cargar_recaudacion_abonados()
+recaudacion = pickle_service.cargar_recaudacion()
+parking = pickle_service.cargar_parking()
 
 
-lista_abonados = main_service.lista_abonados
-lista_clientes = main_service.lista_clientes
-estado_plazas = main_service.estado_plazas
-recaudacion_abonados = main_service.recaudacion_abonos
-recaudacion = main_service.recaudacion
-parking = main_service.parking
+# lista_abonados = main_service.lista_abonados
+# lista_clientes = main_service.lista_clientes
+# estado_plazas = main_service.estado_plazas
+# recaudacion_abonados = main_service.recaudacion_abonos
+# recaudacion = main_service.recaudacion
+# parking = main_service.parking
 
 
 def actualizado_automatico():

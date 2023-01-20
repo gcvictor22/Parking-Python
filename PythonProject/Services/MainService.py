@@ -21,7 +21,7 @@ class MainService:
         estado_plazas[i] = "Libre"
 
     v1 = Vehiculo(matricula='1234-AAA', tipo='Moto')
-    fecha_activacion_bono1 = datetime(year=2022, month=12, day=6, hour=9, minute=0, second=0)
+    fecha_activacion_bono1 = datetime(year=2022, month=12, day=6, hour=14, minute=12, second=9)
     fecha_caducidad_abono1 = fecha_activacion_bono1 + timedelta(days=30)
     ab1 = Abonado(nombre='John', apellidos='Doe', gmail='johndoe@gmail.com', dni='12345678A',
                   tarjeta='1234567891234567',

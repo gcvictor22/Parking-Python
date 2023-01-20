@@ -22,7 +22,7 @@ class AdministradorService:
         cant = 0
 
         print("Fecha de inicio de la recaudación"
-              "---------------------------------")
+              "\n---------------------------------")
         try:
             anho1 = int(input("Año: "))
             mes1 = int(input("Mes: "))
@@ -33,7 +33,7 @@ class AdministradorService:
                 raise ValueError
             else:
                 print("Fecha final de la recaudación"
-                      "-----------------------------")
+                      "\n-----------------------------")
                 try:
                     anho2 = int(input("Año: "))
                     mes2 = int(input("Mes: "))
